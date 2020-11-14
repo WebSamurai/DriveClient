@@ -1,43 +1,92 @@
-<form>
-    <div class="form-group">
-      <label for="exampleInputEmail1">User Name</label>
-      <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
-      <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
-    </div>
-    <div class="form-group">
-        <label for="exampleInputEmail1">User Name</label>
-        <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
-        <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
-      </div>
-      <div class="form-group">
-        <label for="exampleInputEmail1">User Name</label>
-        <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
-        <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
-      </div>
-      <div class="form-group">
-        <label for="exampleInputEmail1">User Name</label>
-        <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
-        <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
-      </div>
-      <div class="form-group">
-        <label for="exampleInputEmail1">User Name</label>
-        <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
-        <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
-      </div>
-      <div class="form-group">
-        <label for="exampleInputEmail1">User Name</label>
-        <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
-        <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
-      </div>
-    <div class="form-group">
-      <label for="exampleInputPassword1">Password</label>
-      <input type="password" class="form-control" id="exampleInputPassword1">
-    </div>
-    <div class="form-group form-check">
-      <input type="checkbox" class="form-check-input" id="exampleCheck1">
-      <label class="form-check-label" for="exampleCheck1">Check me out</label>
-    </div>
-    <button type="submit" class="btn btn-primary">Register</button>
-  </form>
+<form [formGroup]="userForm" (ngSubmit)="register(userForm.value)" novalidate>
+  <div class="form-group">
+    <label for="username">User Name <span style="color: red"> *</span></label>
+    <em *ngIf="userName?.touched && userName?.errors?.required">required</em>
+    <input
+      type="text"
+      ngModel
+      class="form-control"
+      formControlName="userName"
+      id="username"
+    />
+  </div>
+  <div class="form-group">
+    <label for="password">Password <span style="color: red"> *</span></label>
+    <em *ngIf="password?.touched && password?.errors?.required"> required</em>
+    <input
+      type="password"
+      ngModel
+      class="form-control"
+      formControlName="password"
+      id="password"
+    />
+  </div>
+  <div class="form-group">
+    <label for="confirmPassword"
+      >Confirm Password <span style="color: red"> *</span></label
+    >
+    <em *ngIf="confirmPassword?.touched && confirmPassword?.errors?.required">
+      required</em
+    >
+    <em
+      *ngIf="
+        confirmPassword?.touched &&
+        confirmPassword?.errors &&
+        confirmPassword?.errors.notSame
+      "
+    >
+      password and confirm password not same</em
+    >
 
-
+    <input
+      #c
+      type="password"
+      class="form-control"
+      formControlName="confirmPassword"
+      id="confirmPassword"
+    />
+  </div>
+  <div class="form-group">
+    <label for="emailAddress"
+      >Email Address <span style="color: red"> *</span></label
+    >
+    <em *ngIf="emailAddress?.touched && emailAddress?.errors?.required">
+      required</em
+    >
+    <em *ngIf="emailAddress?.touched && emailAddress?.errors?.email">
+      invalid email</em
+    >
+    <input
+      type="email"
+      ngModel
+      class="form-control"
+      formControlName="emailAddress"
+      id="emailAddress"
+    />
+  </div>
+  <div class="form-group">
+    <label for="firstName">First name</label> <span style="color: red"> *</span>
+    <em *ngIf="firstName?.touched && firstName?.errors?.required"> required</em>
+    <input
+      type="text"
+      ngModel
+      class="form-control"
+      formControlName="firstName"
+      id="firstName"
+    />
+  </div>
+  <div class="form-group">
+    <label for="lastName">Last name <span style="color: red"> *</span></label>
+    <em *ngIf="lastName?.touched && lastName?.errors?.required"> required</em>
+    <input
+      type="text"
+      ngModel
+      class="form-control"
+      formControlName="lastName"
+      id="lastName"
+    />
+  </div>
+  <button type="submit" class="btn btn-primary" [disabled]="userForm.invalid">
+    Register
+  </button>
+</form>

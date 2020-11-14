@@ -1,0 +1,5 @@
+{
+  "appBaseUrl": "http://localhost:4200",
+  "appServiceBaseUrl": "http://localhost:60000"
+
+}

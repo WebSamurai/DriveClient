@@ -4,13 +4,17 @@ import { NgModule } from '@angular/core';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { AppCommonModule } from './features/common/app-common-module';
-import { MainComponent } from './features/main/main/main.component';
-import { StudentComponent } from './features/main/student/student.component';
-import { EmployeeComponent } from './features/main/employee/employee.component';
-import { VehicleComponent } from './features/main/vehicle/vehicle.component';
-import { BatchComponent } from './features/main/batch/batch.component';
-import { EnquiryComponent } from './features/main/enquiry/enquiry.component';
+import { ServiceProxyModule } from './features/services/service.proxy.module';
+import { API_BASE_URL } from './features/services/service.proxy';
+import { AppConsts } from './App.constant';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
+import { ToastrModule } from 'ngx-toastr';
+import { JwtModule } from '@auth0/angular-jwt';
+import { VerticalNavbarComponent } from './features/common/vertical-navbar/vertical-navbar.component';
+export function TokenGetter() {
+  return localStorage.getItem('token');
+}
 
 @NgModule({
   declarations: [
@@ -20,8 +24,17 @@ import { EnquiryComponent } from './features/main/enquiry/enquiry.component';
     BrowserModule,
     AppRoutingModule,
     AppCommonModule,
+    ServiceProxyModule,
+    BrowserAnimationsModule,
+    ToastrModule.forRoot(),
+    JwtModule.forRoot({
+      config: {
+        tokenGetter: TokenGetter
+      }
+    })
   ],
-  providers: [],
+  providers: [
+    { provide: API_BASE_URL, useFactory: () => AppConsts.apiBaseUrl }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

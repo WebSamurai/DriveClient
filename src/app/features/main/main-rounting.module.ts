@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { BatchComponent } from './batch/batch.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
+import { EmployeeComponent } from './employee/employee.component';
 import { EnquiryComponent } from './enquiry/enquiry.component';
 import { MainComponent } from './main/main.component';
 import { SchoolComponent } from './school/school.component';
@@ -21,6 +22,7 @@ import { VehicleComponent } from './vehicle/vehicle.component';
                     { path: 'school', component: SchoolComponent },
                     { path: 'vehicle', component: VehicleComponent },
                     { path: 'batch', component: BatchComponent },
+                    { path: 'employee', component: EmployeeComponent },
                     { path: 'dashboard', component: DashboardComponent }
                 ]
             }

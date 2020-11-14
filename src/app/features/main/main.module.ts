@@ -14,9 +14,9 @@ import { VehicleComponent } from './vehicle/vehicle.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 @NgModule({
     imports: [
+        AppCommonModule,
         RouterModule,
         CommonModule,
-        AppCommonModule,
         MainRoutingModule,
         FormsModule,
         ReactiveFormsModule,

@@ -1,5 +1,14 @@
 <app-login-nav-bar></app-login-nav-bar> 
 
 <div class="container" style="padding-top: 6rem;">
+    <div class="  btn-group btn-group-toggle" data-toggle="buttons">
+
+        <label class="btn btn-secondary">
+          <input type="radio" name="options" id="option2" (click)="router.navigate(['account/login'])"> Login
+        </label>
+        <label class="btn btn-secondary">
+          <input type="radio" name="options" id="option3" (click)="router.navigate(['account/register'])"> Register
+        </label>
+      </div>
     <router-outlet></router-outlet>
 </div>
