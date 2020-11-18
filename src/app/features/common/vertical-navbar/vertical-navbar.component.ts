@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { TokenService } from '../../services/token-service';
 
 @Component({
   selector: 'app-vertical-navbar',
@@ -7,9 +8,11 @@ import { Component, OnInit } from '@angular/core';
 })
 export class VerticalNavbarComponent implements OnInit {
   public toggle = false;
-  constructor() { }
+  public user: any;
+  constructor(private tokenService: TokenService) { }
 
   ngOnInit(): void {
+    this.user = this.tokenService.GetUser();
   }
   public togleNavBar() {
     this.toggle = !this.toggle;

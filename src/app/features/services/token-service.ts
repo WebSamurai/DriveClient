@@ -21,6 +21,14 @@ export class TokenService {
         }
         return '';
     }
+    public GetUser(): AuthencateResultModel {
+        const userString = localStorage.getItem('user');
+        if (userString) {
+            const user = JSON.parse(userString) as AuthencateResultModel;
+            return user;
+        }
+        return null;
+    }
     public clear(): void {
         localStorage.removeItem('token');
         localStorage.removeItem('user');

@@ -1984,6 +1984,7 @@ export class UserDto extends EntityBaseOfLong implements IUserDto {
     authenticationSource?: string | undefined;
     emailConfirmationCode?: string | undefined;
     isActive!: boolean;
+    photo?: string | undefined;
 
     constructor(data?: IUserDto) {
         super(data);
@@ -2010,6 +2011,7 @@ export class UserDto extends EntityBaseOfLong implements IUserDto {
             this.authenticationSource = _data["authenticationSource"];
             this.emailConfirmationCode = _data["emailConfirmationCode"];
             this.isActive = _data["isActive"];
+            this.photo = _data["photo"];
         }
     }
 
@@ -2040,6 +2042,7 @@ export class UserDto extends EntityBaseOfLong implements IUserDto {
         data["authenticationSource"] = this.authenticationSource;
         data["emailConfirmationCode"] = this.emailConfirmationCode;
         data["isActive"] = this.isActive;
+        data["photo"] = this.photo;
         super.toJSON(data);
         return data; 
     }
@@ -2064,6 +2067,7 @@ export interface IUserDto extends IEntityBaseOfLong {
     authenticationSource?: string | undefined;
     emailConfirmationCode?: string | undefined;
     isActive: boolean;
+    photo?: string | undefined;
 }
 
 export class VehicleDto extends EntityBaseOfLong implements IVehicleDto {

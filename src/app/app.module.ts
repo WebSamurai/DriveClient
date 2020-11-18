@@ -11,7 +11,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { ToastrModule } from 'ngx-toastr';
 import { JwtModule } from '@auth0/angular-jwt';
-import { VerticalNavbarComponent } from './features/common/vertical-navbar/vertical-navbar.component';
 export function TokenGetter() {
   return localStorage.getItem('token');
 }

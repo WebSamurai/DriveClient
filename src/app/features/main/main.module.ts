@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { HttpClientModule, HttpClientJsonpModule } from '@angular/common/http';
-import { NgModule } from "@angular/core";
+import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { AppCommonModule } from '../common/app-common-module';
@@ -12,6 +12,8 @@ import { SchoolComponent } from './school/school.component';
 import { StudentComponent } from './student/student.component';
 import { VehicleComponent } from './vehicle/vehicle.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
+import { EditUserProfileComponent } from './user/edit-user-profile/edit-user-profile.component';
+import { UserProfileComponent } from './user/user-profile/user-profile.component';
 @NgModule({
     imports: [
         AppCommonModule,
@@ -21,7 +23,8 @@ import { DashboardComponent } from './dashboard/dashboard.component';
         FormsModule,
         ReactiveFormsModule,
         HttpClientModule,
-        HttpClientJsonpModule
+        HttpClientJsonpModule,
+
     ],
     declarations: [MainComponent,
         SchoolComponent,
@@ -29,7 +32,9 @@ import { DashboardComponent } from './dashboard/dashboard.component';
         StudentComponent,
         BatchComponent,
         VehicleComponent,
-        DashboardComponent
-    ]
+        DashboardComponent,
+        EditUserProfileComponent,
+        UserProfileComponent
+    ],
 })
 export class MainModule { }

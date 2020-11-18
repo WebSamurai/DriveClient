@@ -1,0 +1,128 @@
+<form [formGroup]="editForm" (ngSubmit)="saveUser()" >
+ <div class="modal-header">
+    <h4 class="modal-title pull-left">Edit User Profile</h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="close()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+
+    <div class="row">
+
+        <div class="col-6 form-group">
+            <div class="media d-flex align-items-center">
+                <img [src]="photo===undefined?'assets/images/profile.png':photo" alt="..." width="65" class="mr-3 rounded-circle img-thumbnail shadow-sm">
+                <div class="form-group">
+                    <label for="example-fileinput">Default file input</label>
+                    <input type="file" id="example-fileinput" class="form-control-file" formControlName="photo" (change)="handleInputChange($event)">
+                </div>
+                <div class="media-body">
+                 
+                  
+                </div>
+              </div>
+        </div>
+        <div class="col-6 form-group">
+            <h4 class="m-0">User Name : {{user?.userName}}  </h4>
+        </div>
+    </div>
+      <div class="row">
+          <div class="col-6">
+            <div class="form-group">
+                <label for="example-number">firstName</label>
+                <em *ngIf="editForm.get('firstName')?.touched && editForm.get('firstName')?.errors?.required"> required</em>
+                <input class="form-control" id="firstName" type="text" formControlName="firstName" >
+            </div>
+
+          </div>
+          <div class="col-6">
+            <div class="form-group">
+                <label for="example-color">LastName</label>
+                <em *ngIf="editForm.get('lastName')?.touched && editForm.get('lastName')?.errors?.required"> required</em>
+                <input class="form-control" id="lastName" type="text" formControlName="lastName" >
+            </div>
+        </div>
+      </div>
+      <div class="row">
+          <div class="col-6">
+            <div class="form-group">
+                <label for="password">Password <span style="color: red"> *</span></label>
+                <em *ngIf="editForm.get('password')?.touched && editForm.get('password')?.errors?.required"> required</em>
+                <input
+                  type="password"
+                  ngModel
+                  class="form-control"
+                  formControlName="password"
+                  id="password"
+                />
+              </div>
+             
+          </div>
+          <div class="col-6">
+            <div class="form-group">
+                <label for="confirmPassword"
+                  >Confirm Password <span style="color: red"> *</span></label
+                >
+                <em *ngIf=" editForm.get('confirmPassword')?.touched &&  editForm.get('confirmPassword')?.errors?.required">
+                  required</em
+                >
+                <em
+                  *ngIf="
+                  editForm.get('confirmPassword')?.touched &&
+                  editForm.get('confirmPassword')?.errors &&
+                  editForm.get('confirmPassword')?.errors.notSame
+                  "
+                >
+                  password and confirm password not same</em
+                >
+            
+                <input
+                  #c
+                  type="password"
+                  class="form-control"
+                  formControlName="confirmPassword"
+                  id="confirmPassword"
+                />
+              </div>
+          </div>
+      </div>
+      <div class="row">
+        <div class="col-6">
+          <div class="form-group">
+              <label for="example-number">Email Address</label>
+              <em *ngIf="editForm.get('emailAddress')?.touched && editForm.get('emailAddress')?.errors?.required">
+                required</em
+              >
+              <em *ngIf="editForm.get('emailAddress')?.touched && editForm.get('emailAddress')?.errors?.email">
+                Invalid email</em
+              >
+              <input class="form-control" id="emailAddress" type="email" formControlName="emailAddress" (ngModel)="user.emailAddress">
+          </div>
+
+        </div>
+        <div class="col-6">
+          <div class="form-group">
+              <label for="example-color">Mobile Number</label>
+              <em
+              *ngIf="
+              editForm.get('phoneNumber')?.touched &&
+              editForm.get('phoneNumber')?.errors &&
+              editForm.get('phoneNumber')?.errors?.minLength ||  editForm.get('phoneNumber')?.errors?.maxLength
+              "
+            >
+             invalid Mobile number </em
+            >
+              <input class="form-control" id="phoneNumber" type="text" formControlName="phoneNumber" (ngModel)="user.phoneNumber">
+          </div>
+      </div>
+    </div>
+    
+    
+
+
+  </div>
+    <div class="modal-footer">
+        <button type="submit" class="btn btn-primary"  [disabled]="editForm.invalid">Save</button>
+        <button type="button" class="btn btn-secondary" (click)="close()">Close</button>
+      </div>
+    </form>
