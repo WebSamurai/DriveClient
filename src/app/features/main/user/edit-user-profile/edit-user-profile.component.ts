@@ -80,6 +80,7 @@ export class EditUserProfileComponent implements OnInit {
   _handleReaderLoaded(e) {
     const reader = e.target;
     this.photo = reader.result;
+    this.photo = this.photo.replace('data:image/jpeg;base64,', '');
 
   }
 }

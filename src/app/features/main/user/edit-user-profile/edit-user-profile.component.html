@@ -11,7 +11,7 @@
 
         <div class="col-6 form-group">
             <div class="media d-flex align-items-center">
-                <img [src]="photo===undefined?'assets/images/profile.png':photo" alt="..." width="65" class="mr-3 rounded-circle img-thumbnail shadow-sm">
+                <img [src]="photo===undefined?'assets/images/profile.png':'data:image/jpeg;base64,'+ photo" alt="..." width="65" class="mr-3 rounded-circle img-thumbnail shadow-sm">
                 <div class="form-group">
                     <label for="example-fileinput">Default file input</label>
                     <input type="file" id="example-fileinput" class="form-control-file" formControlName="photo" (change)="handleInputChange($event)">
