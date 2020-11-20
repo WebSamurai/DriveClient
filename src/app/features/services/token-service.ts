@@ -1,8 +1,12 @@
 import { Injectable } from '@angular/core';
+import { JwtHelperService } from '@auth0/angular-jwt';
 import { AuthencateResultModel } from './service.proxy';
 
 @Injectable({ providedIn: 'root' })
 export class TokenService {
+    constructor(private jwtHelperService: JwtHelperService) {
+
+    }
     public get(): string {
         return localStorage.getItem('token');
     }
@@ -11,7 +15,15 @@ export class TokenService {
     }
     public setUser(data: AuthencateResultModel) {
         this.setToken(data.token);
+        this.setSchoolId(data.token);
         localStorage.setItem('user', JSON.stringify(data));
+    }
+    setSchoolId(token: string) {
+        const data = this.jwtHelperService.decodeToken(token);
+        localStorage.setItem('schoolId', data.schoolId);
+    }
+    getSchoolId(): number {
+        return +localStorage.getItem('schoolId');
     }
     public GetUserName(): string {
         const userString = localStorage.getItem('user');
@@ -32,5 +44,6 @@ export class TokenService {
     public clear(): void {
         localStorage.removeItem('token');
         localStorage.removeItem('user');
+        localStorage.removeItem('schoolId');
     }
 }

@@ -12,6 +12,8 @@ import { Observable, throwError as _observableThrow, of as _observableOf } from 
 import { Injectable, Inject, Optional, InjectionToken } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpResponse, HttpResponseBase } from '@angular/common/http';
 
+import * as moment from 'moment';
+
 export const API_BASE_URL = new InjectionToken<string>('API_BASE_URL');
 
 @Injectable()
@@ -546,6 +548,56 @@ export class SchoolSeviceProxy {
         }
         return _observableOf<SchoolDto>(<any>null);
     }
+
+    schoolNameExist(name: string | null | undefined): Observable<boolean> {
+        let url_ = this.baseUrl + "/api/School/SchoolNameExist?";
+        if (name !== undefined && name !== null)
+            url_ += "name=" + encodeURIComponent("" + name) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processSchoolNameExist(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processSchoolNameExist(<any>response_);
+                } catch (e) {
+                    return <Observable<boolean>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<boolean>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processSchoolNameExist(response: HttpResponseBase): Observable<boolean> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = resultData200 !== undefined ? resultData200 : <any>null;
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<boolean>(<any>null);
+    }
 }
 
 @Injectable()
@@ -710,11 +762,11 @@ export class UserSeviceProxy {
         return _observableOf<UserDto>(<any>null);
     }
 
-    add(employee: UserDto): Observable<UserDto> {
+    add(user: UserDto): Observable<UserDto> {
         let url_ = this.baseUrl + "/api/User/Add";
         url_ = url_.replace(/[?&]$/, "");
 
-        const content_ = JSON.stringify(employee);
+        const content_ = JSON.stringify(user);
 
         let options_ : any = {
             body: content_,
@@ -762,11 +814,11 @@ export class UserSeviceProxy {
         return _observableOf<UserDto>(<any>null);
     }
 
-    update(employee: UserDto): Observable<UserDto> {
+    update(user: UserDto): Observable<UserDto> {
         let url_ = this.baseUrl + "/api/User/Update";
         url_ = url_.replace(/[?&]$/, "");
 
-        const content_ = JSON.stringify(employee);
+        const content_ = JSON.stringify(user);
 
         let options_ : any = {
             body: content_,
@@ -1746,14 +1798,14 @@ export class StudentDto extends EntityBaseOfLong implements IStudentDto {
     midleName?: string | undefined;
     lastName?: string | undefined;
     address?: string | undefined;
-    courseStartDate!: Date;
-    courseEndDate?: Date | undefined;
+    courseStartDate!: moment.Moment;
+    courseEndDate?: moment.Moment | undefined;
     emailAddress?: string | undefined;
     mobileNo?: string | undefined;
     isWatsApp!: boolean;
     alternateNo?: string | undefined;
     profilePicture?: string | undefined;
-    birthDate!: Date;
+    birthDate!: moment.Moment;
     gender!: Gender;
     batchId!: number;
     batch?: BatchDto | undefined;
@@ -1771,14 +1823,14 @@ export class StudentDto extends EntityBaseOfLong implements IStudentDto {
             this.midleName = _data["midleName"];
             this.lastName = _data["lastName"];
             this.address = _data["address"];
-            this.courseStartDate = _data["courseStartDate"] ? new Date(_data["courseStartDate"].toString()) : <any>undefined;
-            this.courseEndDate = _data["courseEndDate"] ? new Date(_data["courseEndDate"].toString()) : <any>undefined;
+            this.courseStartDate = _data["courseStartDate"] ? moment(_data["courseStartDate"].toString()) : <any>undefined;
+            this.courseEndDate = _data["courseEndDate"] ? moment(_data["courseEndDate"].toString()) : <any>undefined;
             this.emailAddress = _data["emailAddress"];
             this.mobileNo = _data["mobileNo"];
             this.isWatsApp = _data["isWatsApp"];
             this.alternateNo = _data["alternateNo"];
             this.profilePicture = _data["profilePicture"];
-            this.birthDate = _data["birthDate"] ? new Date(_data["birthDate"].toString()) : <any>undefined;
+            this.birthDate = _data["birthDate"] ? moment(_data["birthDate"].toString()) : <any>undefined;
             this.gender = _data["gender"];
             this.batchId = _data["batchId"];
             this.batch = _data["batch"] ? BatchDto.fromJS(_data["batch"]) : <any>undefined;
@@ -1823,14 +1875,14 @@ export interface IStudentDto extends IEntityBaseOfLong {
     midleName?: string | undefined;
     lastName?: string | undefined;
     address?: string | undefined;
-    courseStartDate: Date;
-    courseEndDate?: Date | undefined;
+    courseStartDate: moment.Moment;
+    courseEndDate?: moment.Moment | undefined;
     emailAddress?: string | undefined;
     mobileNo?: string | undefined;
     isWatsApp: boolean;
     alternateNo?: string | undefined;
     profilePicture?: string | undefined;
-    birthDate: Date;
+    birthDate: moment.Moment;
     gender: Gender;
     batchId: number;
     batch?: BatchDto | undefined;
@@ -1845,9 +1897,9 @@ export enum Gender {
 
 export class BatchDto extends EntityBaseOfLong implements IBatchDto {
     name?: string | undefined;
-    startDate!: Date;
-    endDate?: Date | undefined;
-    batchTime!: Date;
+    startDate!: moment.Moment;
+    endDate?: moment.Moment | undefined;
+    batchTime!: moment.Moment;
     students?: StudentDto[] | undefined;
     photo?: string | undefined;
     schoolId!: number;
@@ -1861,9 +1913,9 @@ export class BatchDto extends EntityBaseOfLong implements IBatchDto {
         super.init(_data);
         if (_data) {
             this.name = _data["name"];
-            this.startDate = _data["startDate"] ? new Date(_data["startDate"].toString()) : <any>undefined;
-            this.endDate = _data["endDate"] ? new Date(_data["endDate"].toString()) : <any>undefined;
-            this.batchTime = _data["batchTime"] ? new Date(_data["batchTime"].toString()) : <any>undefined;
+            this.startDate = _data["startDate"] ? moment(_data["startDate"].toString()) : <any>undefined;
+            this.endDate = _data["endDate"] ? moment(_data["endDate"].toString()) : <any>undefined;
+            this.batchTime = _data["batchTime"] ? moment(_data["batchTime"].toString()) : <any>undefined;
             if (Array.isArray(_data["students"])) {
                 this.students = [] as any;
                 for (let item of _data["students"])
@@ -1903,9 +1955,9 @@ export class BatchDto extends EntityBaseOfLong implements IBatchDto {
 
 export interface IBatchDto extends IEntityBaseOfLong {
     name?: string | undefined;
-    startDate: Date;
-    endDate?: Date | undefined;
-    batchTime: Date;
+    startDate: moment.Moment;
+    endDate?: moment.Moment | undefined;
+    batchTime: moment.Moment;
     students?: StudentDto[] | undefined;
     photo?: string | undefined;
     schoolId: number;
@@ -1918,6 +1970,7 @@ export class SchoolDto extends EntityBaseOfLong implements ISchoolDto {
     user?: UserDto | undefined;
     ownerId!: number;
     isPrimary!: boolean;
+    logoImage?: string | undefined;
     tagLine?: string | undefined;
 
     constructor(data?: ISchoolDto) {
@@ -1932,6 +1985,7 @@ export class SchoolDto extends EntityBaseOfLong implements ISchoolDto {
             this.user = _data["user"] ? UserDto.fromJS(_data["user"]) : <any>undefined;
             this.ownerId = _data["ownerId"];
             this.isPrimary = _data["isPrimary"];
+            this.logoImage = _data["logoImage"];
             this.tagLine = _data["tagLine"];
         }
     }
@@ -1950,6 +2004,7 @@ export class SchoolDto extends EntityBaseOfLong implements ISchoolDto {
         data["user"] = this.user ? this.user.toJSON() : <any>undefined;
         data["ownerId"] = this.ownerId;
         data["isPrimary"] = this.isPrimary;
+        data["logoImage"] = this.logoImage;
         data["tagLine"] = this.tagLine;
         super.toJSON(data);
         return data; 
@@ -1962,6 +2017,7 @@ export interface ISchoolDto extends IEntityBaseOfLong {
     user?: UserDto | undefined;
     ownerId: number;
     isPrimary: boolean;
+    logoImage?: string | undefined;
     tagLine?: string | undefined;
 }
 
@@ -1972,7 +2028,7 @@ export class UserDto extends EntityBaseOfLong implements IUserDto {
     phoneNumber?: string | undefined;
     isLockoutEnabled!: boolean;
     accessFailedCount!: number;
-    lockoutEndDateUtc?: Date | undefined;
+    lockoutEndDateUtc?: moment.Moment | undefined;
     passwordResetCode?: string | undefined;
     emailAddress?: string | undefined;
     password?: string | undefined;
@@ -1984,6 +2040,7 @@ export class UserDto extends EntityBaseOfLong implements IUserDto {
     authenticationSource?: string | undefined;
     emailConfirmationCode?: string | undefined;
     isActive!: boolean;
+    schoolName?: string | undefined;
     photo?: string | undefined;
 
     constructor(data?: IUserDto) {
@@ -1999,7 +2056,7 @@ export class UserDto extends EntityBaseOfLong implements IUserDto {
             this.phoneNumber = _data["phoneNumber"];
             this.isLockoutEnabled = _data["isLockoutEnabled"];
             this.accessFailedCount = _data["accessFailedCount"];
-            this.lockoutEndDateUtc = _data["lockoutEndDateUtc"] ? new Date(_data["lockoutEndDateUtc"].toString()) : <any>undefined;
+            this.lockoutEndDateUtc = _data["lockoutEndDateUtc"] ? moment(_data["lockoutEndDateUtc"].toString()) : <any>undefined;
             this.passwordResetCode = _data["passwordResetCode"];
             this.emailAddress = _data["emailAddress"];
             this.password = _data["password"];
@@ -2011,6 +2068,7 @@ export class UserDto extends EntityBaseOfLong implements IUserDto {
             this.authenticationSource = _data["authenticationSource"];
             this.emailConfirmationCode = _data["emailConfirmationCode"];
             this.isActive = _data["isActive"];
+            this.schoolName = _data["schoolName"];
             this.photo = _data["photo"];
         }
     }
@@ -2042,6 +2100,7 @@ export class UserDto extends EntityBaseOfLong implements IUserDto {
         data["authenticationSource"] = this.authenticationSource;
         data["emailConfirmationCode"] = this.emailConfirmationCode;
         data["isActive"] = this.isActive;
+        data["schoolName"] = this.schoolName;
         data["photo"] = this.photo;
         super.toJSON(data);
         return data; 
@@ -2055,7 +2114,7 @@ export interface IUserDto extends IEntityBaseOfLong {
     phoneNumber?: string | undefined;
     isLockoutEnabled: boolean;
     accessFailedCount: number;
-    lockoutEndDateUtc?: Date | undefined;
+    lockoutEndDateUtc?: moment.Moment | undefined;
     passwordResetCode?: string | undefined;
     emailAddress?: string | undefined;
     password?: string | undefined;
@@ -2067,6 +2126,7 @@ export interface IUserDto extends IEntityBaseOfLong {
     authenticationSource?: string | undefined;
     emailConfirmationCode?: string | undefined;
     isActive: boolean;
+    schoolName?: string | undefined;
     photo?: string | undefined;
 }
 

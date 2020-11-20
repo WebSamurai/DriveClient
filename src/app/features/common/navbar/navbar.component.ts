@@ -16,7 +16,7 @@ export class NavbarComponent implements OnInit {
   }
   public logOut() {
     this.tokenService.clear();
-    this.router.navigate(['/account/login']);
+    window.location.reload();
 
   }
 }

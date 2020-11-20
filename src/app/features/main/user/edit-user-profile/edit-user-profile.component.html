@@ -11,11 +11,12 @@
 
         <div class="col-6 form-group">
             <div class="media d-flex align-items-center">
-                <img [src]="photo===undefined?'assets/images/profile.png':'data:image/jpeg;base64,'+ photo" alt="..." width="65" class="mr-3 rounded-circle img-thumbnail shadow-sm">
+                <!-- <img [src]="user?.photo===undefined ? 'assets/images/profile.png' : 'data:image/jpeg;base64,'+ user?.photo" alt="..." width="65" class="mr-3 rounded-circle img-thumbnail shadow-sm">
                 <div class="form-group">
                     <label for="example-fileinput">Default file input</label>
-                    <input type="file" id="example-fileinput" class="form-control-file" formControlName="photo" (change)="handleInputChange($event)">
-                </div>
+                    <input type="file" class="form-control-file"  (change)="handleInputChange($event)">
+                </div> -->
+                <app-image-control formControlName="photo" ></app-image-control>
                 <div class="media-body">
                  
                   
