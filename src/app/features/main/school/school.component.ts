@@ -26,12 +26,12 @@ export class SchoolComponent implements OnInit {
     modelOption.keyboard = false;
     modelOption.class = 'modal-lg';
     this.bsModalRef = this.modalService.show(EditSchoolComponent, modelOption);
-    this.bsModalRef.content.user = this.school;
+    this.bsModalRef.content.school = this.school;
     this.bsModalRef.content.updateView();
     this.bsModalRef.content.onUpdate.subscribe(x => this.school = x);
 
   }
   getImage() {
-    return isNil(this.school?.logoImage) || this.school?.logoImage === '' ? 'assets/images/profile.png' : `data:image/jpeg;base64,'${this.school?.logoImage}`;
+    return isNil(this.school?.logoImage) || this.school?.logoImage === '' ? 'assets/images/school.jpg' : `data:image/jpeg;base64,'${this.school?.logoImage}`;
   }
 }

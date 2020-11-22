@@ -17,12 +17,13 @@ export class ImageControlComponent implements OnInit, ControlValueAccessor {
   @Input() clasName = 'mr-3 rounded-circle img-thumbnail shadow-sm';
   @Input() disabled = false;
   @Input() ReadOnly = false;
+  @Input() defaultImage = 'profile.png';
   // tslint:disable-next-line:ban-types
   public onModelChange: Function = () => { };
   constructor() { }
   writeValue(obj: any): void {
     if (isNull(obj)) {
-      this.photo = 'assets/images/profile.png';
+      this.photo = `assets/images/${this.defaultImage}`;
     }
     else {
       this.photo = `data:image/png;base64,${obj}`;

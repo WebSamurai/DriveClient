@@ -11,13 +11,15 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { ToastrModule } from 'ngx-toastr';
 import { JwtModule } from '@auth0/angular-jwt';
+import { DatePikerComponent } from './features/common/date-piker/date-piker.component';
+import { TimePikerComponent } from './features/common/time-piker/time-piker.component';
 export function TokenGetter() {
   return localStorage.getItem('token');
 }
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
   ],
   imports: [
     BrowserModule,
@@ -30,7 +32,7 @@ export function TokenGetter() {
       config: {
         tokenGetter: TokenGetter
       }
-    })
+    }),
   ],
   providers: [
     { provide: API_BASE_URL, useFactory: () => AppConsts.apiBaseUrl }],

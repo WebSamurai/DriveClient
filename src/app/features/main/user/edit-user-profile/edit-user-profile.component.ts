@@ -34,7 +34,9 @@ export class EditUserProfileComponent implements OnInit {
       password: [this.user.password, [Validators.required, Validators.minLength(5)]],
       photo: [this.user.photo],
     });
-  } updateView() {
+  }
+
+  updateView() {
     this.buildForm();
     this.editForm.get('confirmPassword').setValue(this.user.password);
   }

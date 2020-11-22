@@ -2,11 +2,7 @@
   <div class="card-header" style="text-align: left">
     <h5>
       School
-      <button
-        class="btn btn-primary"
-        style="float: right"
-        (click)="editSchool()"
-      >
+      <button class="btn btn-primary" style="float: right" (click)="editSchool()">
         <i class="fas fa-user-edit mr-3"></i> edit
       </button>
     </h5>
@@ -16,17 +12,20 @@
     <div class="card-title">
       <div class="row">
         <div class="col-4 form-group">
-            <div class="media d-flex align-items-center">
-                <img [src]="getImage()" alt="..." width="65" class="mr-3 rounded-circle img-thumbnail shadow-sm">
-                <div class="media-body">
-                  <h5>Name : {{ school?.name }}</h5>
-                  
-                </div>
-              </div>
+          <div class="media d-flex align-items-center">
+
+            <img
+              [src]="school?.logoImage===undefined||school?.logoImage===null  || school?.logoImage === ''?'assets/images/school.jpg':'data:image/jpeg;base64,'+ school?.logoImage"
+              alt="..." width="65" class="mr-3 rounded-circle img-thumbnail shadow-sm">
+            <div class="media-body">
+              <h5>Name : {{ school?.name }}</h5>
+
+            </div>
+          </div>
         </div>
         <div class="col-4 form-group">
         </div>
-    </div>
+      </div>
       <div class="row">
         <div class="col-6">
           <h5>Name : {{ school?.name }}</h5>
@@ -36,7 +35,7 @@
         </div>
       </div>
       <div class="row">
-     
+
         <div class="col-12">
           <h5>address Name : {{ school?.address }}</h5>
         </div>

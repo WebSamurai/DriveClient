@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Router, CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree, CanActivateChild } from '@angular/router';
 import { JwtHelperService } from '@auth0/angular-jwt';
-import { fstat } from 'fs';
 import { Observable } from 'rxjs';
 
 @Injectable({

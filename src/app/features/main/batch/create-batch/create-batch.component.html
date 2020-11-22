@@ -1,0 +1,94 @@
+<form [formGroup]="entityForm" (ngSubmit)="save()">
+    <div class="modal-header">
+        <h4 class="modal-title pull-left">{{mode}} Batch</h4>
+        <button type="button" class="close pull-right" aria-label="Close" (click)="close()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+
+        <div class="row">
+            <div class="col-6">
+                <div class="form-group">
+                    <label for="example-number">Batch Name</label>
+                    <em *ngIf="entityForm?.get('name')?.touched && entityForm?.get('name')?.errors?.required">
+                        required</em>
+                    <input class="form-control" id="name" type="text" formControlName="name">
+                </div>
+
+            </div>
+            <div class="col-6">
+                <div class="form-group">
+
+                    <label for="password">select school <span style="color: red"> *</span></label>
+                    <em *ngIf="entityForm?.get('schoolId')?.touched && entityForm?.get('schoolId')?.errors?.required">
+                        required</em>
+                    <drop-select [options]="schools" formControlName="schoolId"></drop-select>
+
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-6">
+                <div class="p-field p-col-12 p-md-6">
+                    <label for="example-color">Start Date</label>
+                    <em *ngIf="entityForm?.get('startDate')?.touched && entityForm?.get('startDate')?.errors?.required">
+                        required</em>
+                    <em
+                        *ngIf="entityForm?.get('startDate')?.touched &&entityForm?.get('startDate')?.errors?.dateInvalid">
+                        Start date should be greater than end date
+                    </em>
+                    <!-- <input type="text" placeholder="Datepicker" class="form-control" formControlName="startDate"
+                        bsDatepicker> -->
+                    <app-date-piker formControlName="startDate">
+                    </app-date-piker>
+                    <!-- <p-calendar formControlName="startDate"> 
+                    </p-calendar>-->
+                </div>
+
+
+            </div>
+            <div class="col-6">
+                <div class="form-group">
+                    <label for="example-color">End Date</label>
+                    <em *ngIf="entityForm?.get('endDate')?.touched && entityForm?.get('endDate')?.errors?.required">
+                        required</em>
+                    <em *ngIf="entityForm?.get('endDate')?.touched && entityForm?.get('endDate')?.errors?.dateInvalid">
+                        Start date should be greater than End date
+                    </em>
+                    <app-date-piker formControlName="endDate">
+                    </app-date-piker>
+                    <!-- <input placeholder="Datepicker" class="form-control" formControlName="endDate"
+                            [bsConfig]="{ adaptivePosition: true }" bsDatepicker /> -->
+                    <!-- <p-calendar formControlName="endDate">
+                    </p-calendar> -->
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-6">
+                <div class="form-group">
+                    <label for="example-number">batchTime</label>
+                    <em *ngIf="entityForm?.get('batchTime')?.touched && entityForm?.get('batchTime')?.errors?.required">
+                        required</em>
+
+                    <!-- <p-calendar formControlName="batchTime" [timeOnly]="true" inputId="timeonly" [hourFormat]="12"
+                        styleClass="form-control">
+                    </p-calendar> -->
+                    <app-time-piker formControlName="batchTime"></app-time-piker>
+                </div>
+
+            </div>
+            <div class="col-6">
+            </div>
+        </div>
+
+
+
+
+    </div>
+    <div class="modal-footer">
+        <button type="submit" class="btn btn-primary" [disabled]="entityForm?.invalid">Save</button>
+        <button type="button" class="btn btn-secondary" (click)="close()">Close</button>
+    </div>
+</form>

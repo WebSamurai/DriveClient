@@ -1,4 +1,4 @@
-<form [formGroup]="editForm" (ngSubmit)="saveschool()">
+<form [formGroup]="editForm" (ngSubmit)="saveSchool()">
   <div class="modal-header">
     <h4 class="modal-title pull-left">Edit school</h4>
     <button type="button" class="close pull-right" aria-label="Close" (click)="close()">
@@ -11,7 +11,7 @@
 
       <div class="col-6 form-group">
         <div class="media d-flex align-items-center">
-          <app-image-control formControlName="logoImage"></app-image-control>
+          <app-image-control formControlName="logoImage" defaultImage="school.jpg"></app-image-control>
           <div class="media-body">
 
 
@@ -19,7 +19,6 @@
         </div>
       </div>
       <div class="col-6 form-group">
-        <h4 class="m-0">school Name : {{school?.name}} </h4>
       </div>
     </div>
     <div class="row">
@@ -33,24 +32,19 @@
       </div>
       <div class="col-6">
         <div class="form-group">
-          <label for="example-color">Address</label>
-          <em *ngIf="editForm.get('address')?.touched && editForm.get('address')?.errors?.required"> required</em>
-          <input class="form-control" id="lastName" type="text" formControlName="address">
-        </div>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-6">
-        <div class="form-group">
           <label for="example-number">tag Line</label>
 
           <input class="form-control" id="tagLine" type="email" formControlName="tagLine" (ngModel)="school.tagLine">
         </div>
-
       </div>
-      <div class="col-6">
-        <div class="form-group">
+    </div>
+    <div class="row">
 
+      <div class="col-12">
+        <div class="form-group">
+          <label for="example-color">Address</label>
+          <em *ngIf="editForm.get('address')?.touched && editForm.get('address')?.errors?.required"> required</em>
+          <input class="form-control" id="lastName" type="text" formControlName="address">
         </div>
       </div>
     </div>
