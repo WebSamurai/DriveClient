@@ -8,13 +8,14 @@ import { VerticalNavbarComponent } from './vertical-navbar/vertical-navbar.compo
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { ImageControlComponent } from './image-control/image-control.component';
 import { TimepickerModule } from 'ngx-bootstrap/timepicker';
-import { BsDatepickerModule, DatePickerComponent } from 'ngx-bootstrap/datepicker';
+import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { DropSelectComponent } from './drop-select/drop-select.component';
 import { TimePikerComponent } from './time-piker/time-piker.component';
+import { AppDatePikerComponent } from './app-date-piker/app-date-piker.component';
 @NgModule({
     imports: [
-        RouterModule,
         CommonModule,
+        RouterModule,
         FormsModule,
         ReactiveFormsModule,
         TimepickerModule.forRoot(),
@@ -27,17 +28,17 @@ import { TimePikerComponent } from './time-piker/time-piker.component';
         VerticalNavbarComponent,
         ImageControlComponent,
         DropSelectComponent,
-        DatePickerComponent,
+        AppDatePikerComponent,
         TimePikerComponent
     ],
-    exports: [NavbarComponent, LoginNavBarComponent,
+    exports: [
+        NavbarComponent,
+        LoginNavBarComponent,
         VerticalNavbarComponent,
         ImageControlComponent,
         DropSelectComponent,
-        DatePickerComponent,
+        AppDatePikerComponent,
         TimePikerComponent,
-        TimepickerModule,
-        BsDatepickerModule,
     ]
 })
 export class AppCommonModule {

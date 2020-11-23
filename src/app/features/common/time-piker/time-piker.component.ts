@@ -1,6 +1,5 @@
-import { Input } from '@angular/core';
-import { Component, forwardRef, OnInit } from '@angular/core';
-import { NG_VALUE_ACCESSOR } from '@angular/forms';
+import { Component, forwardRef, OnInit, Input } from '@angular/core';
+import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 const TYPE_CONTROL_ACCESSOR = {
   provide: NG_VALUE_ACCESSOR,
   useExisting: forwardRef(() => TimePikerComponent),
@@ -8,11 +7,10 @@ const TYPE_CONTROL_ACCESSOR = {
 };
 @Component({
   selector: 'app-time-piker',
-  templateUrl: './time-piker.component.html',
-  styleUrls: ['./time-piker.component.less'],
+  template: `<timepicker [(ngModel)]="innerValue" (ngModelChange)="change()"></timepicker>`,
   providers: [TYPE_CONTROL_ACCESSOR]
 })
-export class TimePikerComponent implements OnInit {
+export class TimePikerComponent implements OnInit, ControlValueAccessor {
 
   @Input() disabled = false;
 
@@ -22,7 +20,7 @@ export class TimePikerComponent implements OnInit {
   constructor() { }
   writeValue(obj: any): void {
     if (obj != null) {
-      this.innerValue = obj.date();
+      this.innerValue = obj.toDate();
     } else {
       this.innerValue = null;
     }

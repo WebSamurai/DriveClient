@@ -8,11 +8,9 @@ import { ServiceProxyModule } from './features/services/service.proxy.module';
 import { API_BASE_URL } from './features/services/service.proxy';
 import { AppConsts } from './App.constant';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-
 import { ToastrModule } from 'ngx-toastr';
 import { JwtModule } from '@auth0/angular-jwt';
-import { DatePikerComponent } from './features/common/date-piker/date-piker.component';
-import { TimePikerComponent } from './features/common/time-piker/time-piker.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 export function TokenGetter() {
   return localStorage.getItem('token');
 }
@@ -23,6 +21,8 @@ export function TokenGetter() {
   ],
   imports: [
     BrowserModule,
+    FormsModule,
+    ReactiveFormsModule,
     AppRoutingModule,
     AppCommonModule,
     ServiceProxyModule,

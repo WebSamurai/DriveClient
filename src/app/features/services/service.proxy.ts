@@ -27,7 +27,7 @@ export class StudentSeviceProxy {
         this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "http://localhost:60000";
     }
 
-    getAll(): Observable<StudentDto[]> {
+    getAll(): Observable<StudentListDto[]> {
         let url_ = this.baseUrl + "/api/Student";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -46,14 +46,14 @@ export class StudentSeviceProxy {
                 try {
                     return this.processGetAll(<any>response_);
                 } catch (e) {
-                    return <Observable<StudentDto[]>><any>_observableThrow(e);
+                    return <Observable<StudentListDto[]>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<StudentDto[]>><any>_observableThrow(response_);
+                return <Observable<StudentListDto[]>><any>_observableThrow(response_);
         }));
     }
 
-    protected processGetAll(response: HttpResponseBase): Observable<StudentDto[]> {
+    protected processGetAll(response: HttpResponseBase): Observable<StudentListDto[]> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -67,7 +67,7 @@ export class StudentSeviceProxy {
             if (Array.isArray(resultData200)) {
                 result200 = [] as any;
                 for (let item of resultData200)
-                    result200!.push(StudentDto.fromJS(item));
+                    result200!.push(StudentListDto.fromJS(item));
             }
             return _observableOf(result200);
             }));
@@ -76,7 +76,7 @@ export class StudentSeviceProxy {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<StudentDto[]>(<any>null);
+        return _observableOf<StudentListDto[]>(<any>null);
     }
 
     delete(id: number | undefined): Observable<void> {
@@ -1463,6 +1463,58 @@ export class SelectSeviceProxy {
         }
         return _observableOf<SelectItemOfLong[]>(<any>null);
     }
+
+    getBatch(): Observable<SelectItemOfLong[]> {
+        let url_ = this.baseUrl + "/api/Select/GetBatch";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetBatch(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetBatch(<any>response_);
+                } catch (e) {
+                    return <Observable<SelectItemOfLong[]>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<SelectItemOfLong[]>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetBatch(response: HttpResponseBase): Observable<SelectItemOfLong[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(SelectItemOfLong.fromJS(item));
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<SelectItemOfLong[]>(<any>null);
+    }
 }
 
 @Injectable()
@@ -1857,6 +1909,120 @@ export interface IEntityBaseOfLong extends IEntityBase {
     id: number;
 }
 
+export class StudentListDto extends EntityBaseOfLong implements IStudentListDto {
+    firstName?: string | undefined;
+    midleName?: string | undefined;
+    lastName?: string | undefined;
+    address?: string | undefined;
+    courseStartDate!: moment.Moment;
+    courseEndDate?: moment.Moment | undefined;
+    emailAddress?: string | undefined;
+    mobileNo?: string | undefined;
+    isWatsApp!: boolean;
+    alternateNo?: string | undefined;
+    profilePicture?: string | undefined;
+    birthDate!: moment.Moment;
+    gender!: Gender;
+    batchId!: number;
+    batchName?: string | undefined;
+    batchStartDate!: moment.Moment;
+    batchEndDate?: moment.Moment | undefined;
+    batchBatchTime!: moment.Moment;
+    schoolId!: number;
+    schoolName?: string | undefined;
+
+    constructor(data?: IStudentListDto) {
+        super(data);
+    }
+
+    init(_data?: any) {
+        super.init(_data);
+        if (_data) {
+            this.firstName = _data["firstName"];
+            this.midleName = _data["midleName"];
+            this.lastName = _data["lastName"];
+            this.address = _data["address"];
+            this.courseStartDate = _data["courseStartDate"] ? moment(_data["courseStartDate"].toString()) : <any>undefined;
+            this.courseEndDate = _data["courseEndDate"] ? moment(_data["courseEndDate"].toString()) : <any>undefined;
+            this.emailAddress = _data["emailAddress"];
+            this.mobileNo = _data["mobileNo"];
+            this.isWatsApp = _data["isWatsApp"];
+            this.alternateNo = _data["alternateNo"];
+            this.profilePicture = _data["profilePicture"];
+            this.birthDate = _data["birthDate"] ? moment(_data["birthDate"].toString()) : <any>undefined;
+            this.gender = _data["gender"];
+            this.batchId = _data["batchId"];
+            this.batchName = _data["batchName"];
+            this.batchStartDate = _data["batchStartDate"] ? moment(_data["batchStartDate"].toString()) : <any>undefined;
+            this.batchEndDate = _data["batchEndDate"] ? moment(_data["batchEndDate"].toString()) : <any>undefined;
+            this.batchBatchTime = _data["batchBatchTime"] ? moment(_data["batchBatchTime"].toString()) : <any>undefined;
+            this.schoolId = _data["schoolId"];
+            this.schoolName = _data["schoolName"];
+        }
+    }
+
+    static fromJS(data: any): StudentListDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new StudentListDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["firstName"] = this.firstName;
+        data["midleName"] = this.midleName;
+        data["lastName"] = this.lastName;
+        data["address"] = this.address;
+        data["courseStartDate"] = this.courseStartDate ? this.courseStartDate.toISOString() : <any>undefined;
+        data["courseEndDate"] = this.courseEndDate ? this.courseEndDate.toISOString() : <any>undefined;
+        data["emailAddress"] = this.emailAddress;
+        data["mobileNo"] = this.mobileNo;
+        data["isWatsApp"] = this.isWatsApp;
+        data["alternateNo"] = this.alternateNo;
+        data["profilePicture"] = this.profilePicture;
+        data["birthDate"] = this.birthDate ? this.birthDate.toISOString() : <any>undefined;
+        data["gender"] = this.gender;
+        data["batchId"] = this.batchId;
+        data["batchName"] = this.batchName;
+        data["batchStartDate"] = this.batchStartDate ? this.batchStartDate.toISOString() : <any>undefined;
+        data["batchEndDate"] = this.batchEndDate ? this.batchEndDate.toISOString() : <any>undefined;
+        data["batchBatchTime"] = this.batchBatchTime ? this.batchBatchTime.toISOString() : <any>undefined;
+        data["schoolId"] = this.schoolId;
+        data["schoolName"] = this.schoolName;
+        super.toJSON(data);
+        return data; 
+    }
+}
+
+export interface IStudentListDto extends IEntityBaseOfLong {
+    firstName?: string | undefined;
+    midleName?: string | undefined;
+    lastName?: string | undefined;
+    address?: string | undefined;
+    courseStartDate: moment.Moment;
+    courseEndDate?: moment.Moment | undefined;
+    emailAddress?: string | undefined;
+    mobileNo?: string | undefined;
+    isWatsApp: boolean;
+    alternateNo?: string | undefined;
+    profilePicture?: string | undefined;
+    birthDate: moment.Moment;
+    gender: Gender;
+    batchId: number;
+    batchName?: string | undefined;
+    batchStartDate: moment.Moment;
+    batchEndDate?: moment.Moment | undefined;
+    batchBatchTime: moment.Moment;
+    schoolId: number;
+    schoolName?: string | undefined;
+}
+
+export enum Gender {
+    Male = 1,
+    Female = 2,
+}
+
 export class StudentDto extends EntityBaseOfLong implements IStudentDto {
     firstName?: string | undefined;
     midleName?: string | undefined;
@@ -1952,11 +2118,6 @@ export interface IStudentDto extends IEntityBaseOfLong {
     batch?: BatchDto | undefined;
     schoolId: number;
     school?: SchoolDto | undefined;
-}
-
-export enum Gender {
-    Male = 1,
-    Female = 2,
 }
 
 export class BatchDto extends EntityBaseOfLong implements IBatchDto {
