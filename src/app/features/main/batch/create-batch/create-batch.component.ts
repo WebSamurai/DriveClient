@@ -16,11 +16,12 @@ export class CreateBatchComponent extends ModelBase<BatchDto> implements OnInit 
   constructor(injector: Injector, private batchService: BatchSeviceProxy) {
     super(injector);
     this.entity = new BatchDto();
-    super.ngOnInit();
 
   }
 
   ngOnInit(): void {
+    super.ngOnInit();
+
   }
   fillDropdowns() {
     this.schools.push({ value: -1, label: 'Please Select school' });

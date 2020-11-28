@@ -17,273 +17,6 @@ import * as moment from 'moment';
 export const API_BASE_URL = new InjectionToken<string>('API_BASE_URL');
 
 @Injectable()
-export class StudentSeviceProxy {
-    private http: HttpClient;
-    private baseUrl: string;
-    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
-
-    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
-        this.http = http;
-        this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "http://localhost:60000";
-    }
-
-    getAll(): Observable<StudentListDto[]> {
-        let url_ = this.baseUrl + "/api/Student";
-        url_ = url_.replace(/[?&]$/, "");
-
-        let options_ : any = {
-            observe: "response",
-            responseType: "blob",
-            headers: new HttpHeaders({
-                "Accept": "application/json"
-            })
-        };
-
-        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processGetAll(response_);
-        })).pipe(_observableCatch((response_: any) => {
-            if (response_ instanceof HttpResponseBase) {
-                try {
-                    return this.processGetAll(<any>response_);
-                } catch (e) {
-                    return <Observable<StudentListDto[]>><any>_observableThrow(e);
-                }
-            } else
-                return <Observable<StudentListDto[]>><any>_observableThrow(response_);
-        }));
-    }
-
-    protected processGetAll(response: HttpResponseBase): Observable<StudentListDto[]> {
-        const status = response.status;
-        const responseBlob =
-            response instanceof HttpResponse ? response.body :
-            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
-
-        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
-        if (status === 200) {
-            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            if (Array.isArray(resultData200)) {
-                result200 = [] as any;
-                for (let item of resultData200)
-                    result200!.push(StudentListDto.fromJS(item));
-            }
-            return _observableOf(result200);
-            }));
-        } else if (status !== 200 && status !== 204) {
-            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            }));
-        }
-        return _observableOf<StudentListDto[]>(<any>null);
-    }
-
-    delete(id: number | undefined): Observable<void> {
-        let url_ = this.baseUrl + "/api/Student?";
-        if (id === null)
-            throw new Error("The parameter 'id' cannot be null.");
-        else if (id !== undefined)
-            url_ += "id=" + encodeURIComponent("" + id) + "&";
-        url_ = url_.replace(/[?&]$/, "");
-
-        let options_ : any = {
-            observe: "response",
-            responseType: "blob",
-            headers: new HttpHeaders({
-            })
-        };
-
-        return this.http.request("delete", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processDelete(response_);
-        })).pipe(_observableCatch((response_: any) => {
-            if (response_ instanceof HttpResponseBase) {
-                try {
-                    return this.processDelete(<any>response_);
-                } catch (e) {
-                    return <Observable<void>><any>_observableThrow(e);
-                }
-            } else
-                return <Observable<void>><any>_observableThrow(response_);
-        }));
-    }
-
-    protected processDelete(response: HttpResponseBase): Observable<void> {
-        const status = response.status;
-        const responseBlob =
-            response instanceof HttpResponse ? response.body :
-            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
-
-        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
-        if (status === 200) {
-            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
-            return _observableOf<void>(<any>null);
-            }));
-        } else if (status !== 200 && status !== 204) {
-            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            }));
-        }
-        return _observableOf<void>(<any>null);
-    }
-
-    get(id: number): Observable<StudentDto> {
-        let url_ = this.baseUrl + "/api/Student/{id}";
-        if (id === undefined || id === null)
-            throw new Error("The parameter 'id' must be defined.");
-        url_ = url_.replace("{id}", encodeURIComponent("" + id));
-        url_ = url_.replace(/[?&]$/, "");
-
-        let options_ : any = {
-            observe: "response",
-            responseType: "blob",
-            headers: new HttpHeaders({
-                "Accept": "application/json"
-            })
-        };
-
-        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processGet(response_);
-        })).pipe(_observableCatch((response_: any) => {
-            if (response_ instanceof HttpResponseBase) {
-                try {
-                    return this.processGet(<any>response_);
-                } catch (e) {
-                    return <Observable<StudentDto>><any>_observableThrow(e);
-                }
-            } else
-                return <Observable<StudentDto>><any>_observableThrow(response_);
-        }));
-    }
-
-    protected processGet(response: HttpResponseBase): Observable<StudentDto> {
-        const status = response.status;
-        const responseBlob =
-            response instanceof HttpResponse ? response.body :
-            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
-
-        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
-        if (status === 200) {
-            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = StudentDto.fromJS(resultData200);
-            return _observableOf(result200);
-            }));
-        } else if (status !== 200 && status !== 204) {
-            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            }));
-        }
-        return _observableOf<StudentDto>(<any>null);
-    }
-
-    add(student: StudentDto): Observable<StudentDto> {
-        let url_ = this.baseUrl + "/api/Student/Add";
-        url_ = url_.replace(/[?&]$/, "");
-
-        const content_ = JSON.stringify(student);
-
-        let options_ : any = {
-            body: content_,
-            observe: "response",
-            responseType: "blob",
-            headers: new HttpHeaders({
-                "Content-Type": "application/json",
-                "Accept": "application/json"
-            })
-        };
-
-        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processAdd(response_);
-        })).pipe(_observableCatch((response_: any) => {
-            if (response_ instanceof HttpResponseBase) {
-                try {
-                    return this.processAdd(<any>response_);
-                } catch (e) {
-                    return <Observable<StudentDto>><any>_observableThrow(e);
-                }
-            } else
-                return <Observable<StudentDto>><any>_observableThrow(response_);
-        }));
-    }
-
-    protected processAdd(response: HttpResponseBase): Observable<StudentDto> {
-        const status = response.status;
-        const responseBlob =
-            response instanceof HttpResponse ? response.body :
-            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
-
-        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
-        if (status === 200) {
-            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = StudentDto.fromJS(resultData200);
-            return _observableOf(result200);
-            }));
-        } else if (status !== 200 && status !== 204) {
-            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            }));
-        }
-        return _observableOf<StudentDto>(<any>null);
-    }
-
-    update(student: StudentDto): Observable<StudentDto> {
-        let url_ = this.baseUrl + "/api/Student/Update";
-        url_ = url_.replace(/[?&]$/, "");
-
-        const content_ = JSON.stringify(student);
-
-        let options_ : any = {
-            body: content_,
-            observe: "response",
-            responseType: "blob",
-            headers: new HttpHeaders({
-                "Content-Type": "application/json",
-                "Accept": "application/json"
-            })
-        };
-
-        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processUpdate(response_);
-        })).pipe(_observableCatch((response_: any) => {
-            if (response_ instanceof HttpResponseBase) {
-                try {
-                    return this.processUpdate(<any>response_);
-                } catch (e) {
-                    return <Observable<StudentDto>><any>_observableThrow(e);
-                }
-            } else
-                return <Observable<StudentDto>><any>_observableThrow(response_);
-        }));
-    }
-
-    protected processUpdate(response: HttpResponseBase): Observable<StudentDto> {
-        const status = response.status;
-        const responseBlob =
-            response instanceof HttpResponse ? response.body :
-            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
-
-        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
-        if (status === 200) {
-            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = StudentDto.fromJS(resultData200);
-            return _observableOf(result200);
-            }));
-        } else if (status !== 200 && status !== 204) {
-            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            }));
-        }
-        return _observableOf<StudentDto>(<any>null);
-    }
-}
-
-@Injectable()
 export class SchoolSeviceProxy {
     private http: HttpClient;
     private baseUrl: string;
@@ -1135,6 +868,540 @@ export class VehicleSeviceProxy {
 }
 
 @Injectable()
+export class EnquirySeviceProxy {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "http://localhost:60000";
+    }
+
+    getAll(): Observable<EnquiryDto[]> {
+        let url_ = this.baseUrl + "/api/Enquiry";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetAll(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetAll(<any>response_);
+                } catch (e) {
+                    return <Observable<EnquiryDto[]>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<EnquiryDto[]>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetAll(response: HttpResponseBase): Observable<EnquiryDto[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(EnquiryDto.fromJS(item));
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<EnquiryDto[]>(<any>null);
+    }
+
+    delete(id: number | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/Enquiry?";
+        if (id === null)
+            throw new Error("The parameter 'id' cannot be null.");
+        else if (id !== undefined)
+            url_ += "id=" + encodeURIComponent("" + id) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+            })
+        };
+
+        return this.http.request("delete", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processDelete(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processDelete(<any>response_);
+                } catch (e) {
+                    return <Observable<void>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<void>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processDelete(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return _observableOf<void>(<any>null);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<void>(<any>null);
+    }
+
+    get(id: number): Observable<EnquiryDto> {
+        let url_ = this.baseUrl + "/api/Enquiry/{id}";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGet(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGet(<any>response_);
+                } catch (e) {
+                    return <Observable<EnquiryDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<EnquiryDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGet(response: HttpResponseBase): Observable<EnquiryDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = EnquiryDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<EnquiryDto>(<any>null);
+    }
+
+    add(enquiry: EnquiryDto): Observable<EnquiryDto> {
+        let url_ = this.baseUrl + "/api/Enquiry/Add";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(enquiry);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processAdd(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processAdd(<any>response_);
+                } catch (e) {
+                    return <Observable<EnquiryDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<EnquiryDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processAdd(response: HttpResponseBase): Observable<EnquiryDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = EnquiryDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<EnquiryDto>(<any>null);
+    }
+
+    update(enquiry: EnquiryDto): Observable<EnquiryDto> {
+        let url_ = this.baseUrl + "/api/Enquiry/Update";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(enquiry);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processUpdate(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processUpdate(<any>response_);
+                } catch (e) {
+                    return <Observable<EnquiryDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<EnquiryDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processUpdate(response: HttpResponseBase): Observable<EnquiryDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = EnquiryDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<EnquiryDto>(<any>null);
+    }
+}
+
+@Injectable()
+export class StudentSeviceProxy {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "http://localhost:60000";
+    }
+
+    getAll(): Observable<StudentListDto[]> {
+        let url_ = this.baseUrl + "/api/Student";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetAll(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetAll(<any>response_);
+                } catch (e) {
+                    return <Observable<StudentListDto[]>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<StudentListDto[]>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetAll(response: HttpResponseBase): Observable<StudentListDto[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(StudentListDto.fromJS(item));
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<StudentListDto[]>(<any>null);
+    }
+
+    delete(id: number | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/Student?";
+        if (id === null)
+            throw new Error("The parameter 'id' cannot be null.");
+        else if (id !== undefined)
+            url_ += "id=" + encodeURIComponent("" + id) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+            })
+        };
+
+        return this.http.request("delete", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processDelete(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processDelete(<any>response_);
+                } catch (e) {
+                    return <Observable<void>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<void>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processDelete(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return _observableOf<void>(<any>null);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<void>(<any>null);
+    }
+
+    get(id: number): Observable<StudentDto> {
+        let url_ = this.baseUrl + "/api/Student/{id}";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGet(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGet(<any>response_);
+                } catch (e) {
+                    return <Observable<StudentDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<StudentDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGet(response: HttpResponseBase): Observable<StudentDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = StudentDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<StudentDto>(<any>null);
+    }
+
+    add(student: StudentDto): Observable<StudentDto> {
+        let url_ = this.baseUrl + "/api/Student/Add";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(student);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processAdd(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processAdd(<any>response_);
+                } catch (e) {
+                    return <Observable<StudentDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<StudentDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processAdd(response: HttpResponseBase): Observable<StudentDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = StudentDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<StudentDto>(<any>null);
+    }
+
+    update(student: StudentDto): Observable<StudentDto> {
+        let url_ = this.baseUrl + "/api/Student/Update";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(student);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processUpdate(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processUpdate(<any>response_);
+                } catch (e) {
+                    return <Observable<StudentDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<StudentDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processUpdate(response: HttpResponseBase): Observable<StudentDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = StudentDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<StudentDto>(<any>null);
+    }
+}
+
+@Injectable()
 export class EmployeeSeviceProxy {
     private http: HttpClient;
     private baseUrl: string;
@@ -1909,286 +2176,6 @@ export interface IEntityBaseOfLong extends IEntityBase {
     id: number;
 }
 
-export class StudentListDto extends EntityBaseOfLong implements IStudentListDto {
-    firstName?: string | undefined;
-    midleName?: string | undefined;
-    lastName?: string | undefined;
-    address?: string | undefined;
-    courseStartDate!: moment.Moment;
-    courseEndDate?: moment.Moment | undefined;
-    emailAddress?: string | undefined;
-    mobileNo?: string | undefined;
-    isWatsApp!: boolean;
-    alternateNo?: string | undefined;
-    profilePicture?: string | undefined;
-    birthDate!: moment.Moment;
-    gender!: Gender;
-    batchId!: number;
-    batchName?: string | undefined;
-    batchStartDate!: moment.Moment;
-    batchEndDate?: moment.Moment | undefined;
-    batchBatchTime!: moment.Moment;
-    schoolId!: number;
-    schoolName?: string | undefined;
-
-    constructor(data?: IStudentListDto) {
-        super(data);
-    }
-
-    init(_data?: any) {
-        super.init(_data);
-        if (_data) {
-            this.firstName = _data["firstName"];
-            this.midleName = _data["midleName"];
-            this.lastName = _data["lastName"];
-            this.address = _data["address"];
-            this.courseStartDate = _data["courseStartDate"] ? moment(_data["courseStartDate"].toString()) : <any>undefined;
-            this.courseEndDate = _data["courseEndDate"] ? moment(_data["courseEndDate"].toString()) : <any>undefined;
-            this.emailAddress = _data["emailAddress"];
-            this.mobileNo = _data["mobileNo"];
-            this.isWatsApp = _data["isWatsApp"];
-            this.alternateNo = _data["alternateNo"];
-            this.profilePicture = _data["profilePicture"];
-            this.birthDate = _data["birthDate"] ? moment(_data["birthDate"].toString()) : <any>undefined;
-            this.gender = _data["gender"];
-            this.batchId = _data["batchId"];
-            this.batchName = _data["batchName"];
-            this.batchStartDate = _data["batchStartDate"] ? moment(_data["batchStartDate"].toString()) : <any>undefined;
-            this.batchEndDate = _data["batchEndDate"] ? moment(_data["batchEndDate"].toString()) : <any>undefined;
-            this.batchBatchTime = _data["batchBatchTime"] ? moment(_data["batchBatchTime"].toString()) : <any>undefined;
-            this.schoolId = _data["schoolId"];
-            this.schoolName = _data["schoolName"];
-        }
-    }
-
-    static fromJS(data: any): StudentListDto {
-        data = typeof data === 'object' ? data : {};
-        let result = new StudentListDto();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["firstName"] = this.firstName;
-        data["midleName"] = this.midleName;
-        data["lastName"] = this.lastName;
-        data["address"] = this.address;
-        data["courseStartDate"] = this.courseStartDate ? this.courseStartDate.toISOString() : <any>undefined;
-        data["courseEndDate"] = this.courseEndDate ? this.courseEndDate.toISOString() : <any>undefined;
-        data["emailAddress"] = this.emailAddress;
-        data["mobileNo"] = this.mobileNo;
-        data["isWatsApp"] = this.isWatsApp;
-        data["alternateNo"] = this.alternateNo;
-        data["profilePicture"] = this.profilePicture;
-        data["birthDate"] = this.birthDate ? this.birthDate.toISOString() : <any>undefined;
-        data["gender"] = this.gender;
-        data["batchId"] = this.batchId;
-        data["batchName"] = this.batchName;
-        data["batchStartDate"] = this.batchStartDate ? this.batchStartDate.toISOString() : <any>undefined;
-        data["batchEndDate"] = this.batchEndDate ? this.batchEndDate.toISOString() : <any>undefined;
-        data["batchBatchTime"] = this.batchBatchTime ? this.batchBatchTime.toISOString() : <any>undefined;
-        data["schoolId"] = this.schoolId;
-        data["schoolName"] = this.schoolName;
-        super.toJSON(data);
-        return data; 
-    }
-}
-
-export interface IStudentListDto extends IEntityBaseOfLong {
-    firstName?: string | undefined;
-    midleName?: string | undefined;
-    lastName?: string | undefined;
-    address?: string | undefined;
-    courseStartDate: moment.Moment;
-    courseEndDate?: moment.Moment | undefined;
-    emailAddress?: string | undefined;
-    mobileNo?: string | undefined;
-    isWatsApp: boolean;
-    alternateNo?: string | undefined;
-    profilePicture?: string | undefined;
-    birthDate: moment.Moment;
-    gender: Gender;
-    batchId: number;
-    batchName?: string | undefined;
-    batchStartDate: moment.Moment;
-    batchEndDate?: moment.Moment | undefined;
-    batchBatchTime: moment.Moment;
-    schoolId: number;
-    schoolName?: string | undefined;
-}
-
-export enum Gender {
-    Male = 1,
-    Female = 2,
-}
-
-export class StudentDto extends EntityBaseOfLong implements IStudentDto {
-    firstName?: string | undefined;
-    midleName?: string | undefined;
-    lastName?: string | undefined;
-    address?: string | undefined;
-    courseStartDate!: moment.Moment;
-    courseEndDate?: moment.Moment | undefined;
-    emailAddress?: string | undefined;
-    mobileNo?: string | undefined;
-    isWatsApp!: boolean;
-    alternateNo?: string | undefined;
-    profilePicture?: string | undefined;
-    birthDate!: moment.Moment;
-    gender!: Gender;
-    batchId!: number;
-    batch?: BatchDto | undefined;
-    schoolId!: number;
-    school?: SchoolDto | undefined;
-
-    constructor(data?: IStudentDto) {
-        super(data);
-    }
-
-    init(_data?: any) {
-        super.init(_data);
-        if (_data) {
-            this.firstName = _data["firstName"];
-            this.midleName = _data["midleName"];
-            this.lastName = _data["lastName"];
-            this.address = _data["address"];
-            this.courseStartDate = _data["courseStartDate"] ? moment(_data["courseStartDate"].toString()) : <any>undefined;
-            this.courseEndDate = _data["courseEndDate"] ? moment(_data["courseEndDate"].toString()) : <any>undefined;
-            this.emailAddress = _data["emailAddress"];
-            this.mobileNo = _data["mobileNo"];
-            this.isWatsApp = _data["isWatsApp"];
-            this.alternateNo = _data["alternateNo"];
-            this.profilePicture = _data["profilePicture"];
-            this.birthDate = _data["birthDate"] ? moment(_data["birthDate"].toString()) : <any>undefined;
-            this.gender = _data["gender"];
-            this.batchId = _data["batchId"];
-            this.batch = _data["batch"] ? BatchDto.fromJS(_data["batch"]) : <any>undefined;
-            this.schoolId = _data["schoolId"];
-            this.school = _data["school"] ? SchoolDto.fromJS(_data["school"]) : <any>undefined;
-        }
-    }
-
-    static fromJS(data: any): StudentDto {
-        data = typeof data === 'object' ? data : {};
-        let result = new StudentDto();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["firstName"] = this.firstName;
-        data["midleName"] = this.midleName;
-        data["lastName"] = this.lastName;
-        data["address"] = this.address;
-        data["courseStartDate"] = this.courseStartDate ? this.courseStartDate.toISOString() : <any>undefined;
-        data["courseEndDate"] = this.courseEndDate ? this.courseEndDate.toISOString() : <any>undefined;
-        data["emailAddress"] = this.emailAddress;
-        data["mobileNo"] = this.mobileNo;
-        data["isWatsApp"] = this.isWatsApp;
-        data["alternateNo"] = this.alternateNo;
-        data["profilePicture"] = this.profilePicture;
-        data["birthDate"] = this.birthDate ? this.birthDate.toISOString() : <any>undefined;
-        data["gender"] = this.gender;
-        data["batchId"] = this.batchId;
-        data["batch"] = this.batch ? this.batch.toJSON() : <any>undefined;
-        data["schoolId"] = this.schoolId;
-        data["school"] = this.school ? this.school.toJSON() : <any>undefined;
-        super.toJSON(data);
-        return data; 
-    }
-}
-
-export interface IStudentDto extends IEntityBaseOfLong {
-    firstName?: string | undefined;
-    midleName?: string | undefined;
-    lastName?: string | undefined;
-    address?: string | undefined;
-    courseStartDate: moment.Moment;
-    courseEndDate?: moment.Moment | undefined;
-    emailAddress?: string | undefined;
-    mobileNo?: string | undefined;
-    isWatsApp: boolean;
-    alternateNo?: string | undefined;
-    profilePicture?: string | undefined;
-    birthDate: moment.Moment;
-    gender: Gender;
-    batchId: number;
-    batch?: BatchDto | undefined;
-    schoolId: number;
-    school?: SchoolDto | undefined;
-}
-
-export class BatchDto extends EntityBaseOfLong implements IBatchDto {
-    name?: string | undefined;
-    startDate!: moment.Moment;
-    endDate?: moment.Moment | undefined;
-    batchTime!: moment.Moment;
-    students?: StudentDto[] | undefined;
-    photo?: string | undefined;
-    schoolId!: number;
-    school?: SchoolDto | undefined;
-
-    constructor(data?: IBatchDto) {
-        super(data);
-    }
-
-    init(_data?: any) {
-        super.init(_data);
-        if (_data) {
-            this.name = _data["name"];
-            this.startDate = _data["startDate"] ? moment(_data["startDate"].toString()) : <any>undefined;
-            this.endDate = _data["endDate"] ? moment(_data["endDate"].toString()) : <any>undefined;
-            this.batchTime = _data["batchTime"] ? moment(_data["batchTime"].toString()) : <any>undefined;
-            if (Array.isArray(_data["students"])) {
-                this.students = [] as any;
-                for (let item of _data["students"])
-                    this.students!.push(StudentDto.fromJS(item));
-            }
-            this.photo = _data["photo"];
-            this.schoolId = _data["schoolId"];
-            this.school = _data["school"] ? SchoolDto.fromJS(_data["school"]) : <any>undefined;
-        }
-    }
-
-    static fromJS(data: any): BatchDto {
-        data = typeof data === 'object' ? data : {};
-        let result = new BatchDto();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["name"] = this.name;
-        data["startDate"] = this.startDate ? this.startDate.toISOString() : <any>undefined;
-        data["endDate"] = this.endDate ? this.endDate.toISOString() : <any>undefined;
-        data["batchTime"] = this.batchTime ? this.batchTime.toISOString() : <any>undefined;
-        if (Array.isArray(this.students)) {
-            data["students"] = [];
-            for (let item of this.students)
-                data["students"].push(item.toJSON());
-        }
-        data["photo"] = this.photo;
-        data["schoolId"] = this.schoolId;
-        data["school"] = this.school ? this.school.toJSON() : <any>undefined;
-        super.toJSON(data);
-        return data; 
-    }
-}
-
-export interface IBatchDto extends IEntityBaseOfLong {
-    name?: string | undefined;
-    startDate: moment.Moment;
-    endDate?: moment.Moment | undefined;
-    batchTime: moment.Moment;
-    students?: StudentDto[] | undefined;
-    photo?: string | undefined;
-    schoolId: number;
-    school?: SchoolDto | undefined;
-}
-
 export class SchoolDto extends EntityBaseOfLong implements ISchoolDto {
     name?: string | undefined;
     address?: string | undefined;
@@ -2394,6 +2381,385 @@ export interface IVehicleDto extends IEntityBaseOfLong {
     modelName?: string | undefined;
     number?: string | undefined;
     photo?: string | undefined;
+}
+
+export class EnquiryDto extends EntityBaseOfLong implements IEnquiryDto {
+    firstName?: string | undefined;
+    midleName?: string | undefined;
+    lastName?: string | undefined;
+    address?: string | undefined;
+    enquiryStartDate!: moment.Moment;
+    followupDate?: moment.Moment | undefined;
+    emailAddress?: string | undefined;
+    mobileNo?: string | undefined;
+    birthDate!: moment.Moment;
+    isWatsApp!: boolean;
+    alternateNo?: string | undefined;
+    profilePicture?: string | undefined;
+    closeEnquiry!: boolean;
+    schoolId!: number;
+    gender!: Gender;
+    prefferdBatch!: PrefferedBatch;
+
+    constructor(data?: IEnquiryDto) {
+        super(data);
+    }
+
+    init(_data?: any) {
+        super.init(_data);
+        if (_data) {
+            this.firstName = _data["firstName"];
+            this.midleName = _data["midleName"];
+            this.lastName = _data["lastName"];
+            this.address = _data["address"];
+            this.enquiryStartDate = _data["enquiryStartDate"] ? moment(_data["enquiryStartDate"].toString()) : <any>undefined;
+            this.followupDate = _data["followupDate"] ? moment(_data["followupDate"].toString()) : <any>undefined;
+            this.emailAddress = _data["emailAddress"];
+            this.mobileNo = _data["mobileNo"];
+            this.birthDate = _data["birthDate"] ? moment(_data["birthDate"].toString()) : <any>undefined;
+            this.isWatsApp = _data["isWatsApp"];
+            this.alternateNo = _data["alternateNo"];
+            this.profilePicture = _data["profilePicture"];
+            this.closeEnquiry = _data["closeEnquiry"];
+            this.schoolId = _data["schoolId"];
+            this.gender = _data["gender"];
+            this.prefferdBatch = _data["prefferdBatch"];
+        }
+    }
+
+    static fromJS(data: any): EnquiryDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new EnquiryDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["firstName"] = this.firstName;
+        data["midleName"] = this.midleName;
+        data["lastName"] = this.lastName;
+        data["address"] = this.address;
+        data["enquiryStartDate"] = this.enquiryStartDate ? this.enquiryStartDate.toISOString() : <any>undefined;
+        data["followupDate"] = this.followupDate ? this.followupDate.toISOString() : <any>undefined;
+        data["emailAddress"] = this.emailAddress;
+        data["mobileNo"] = this.mobileNo;
+        data["birthDate"] = this.birthDate ? this.birthDate.toISOString() : <any>undefined;
+        data["isWatsApp"] = this.isWatsApp;
+        data["alternateNo"] = this.alternateNo;
+        data["profilePicture"] = this.profilePicture;
+        data["closeEnquiry"] = this.closeEnquiry;
+        data["schoolId"] = this.schoolId;
+        data["gender"] = this.gender;
+        data["prefferdBatch"] = this.prefferdBatch;
+        super.toJSON(data);
+        return data; 
+    }
+}
+
+export interface IEnquiryDto extends IEntityBaseOfLong {
+    firstName?: string | undefined;
+    midleName?: string | undefined;
+    lastName?: string | undefined;
+    address?: string | undefined;
+    enquiryStartDate: moment.Moment;
+    followupDate?: moment.Moment | undefined;
+    emailAddress?: string | undefined;
+    mobileNo?: string | undefined;
+    birthDate: moment.Moment;
+    isWatsApp: boolean;
+    alternateNo?: string | undefined;
+    profilePicture?: string | undefined;
+    closeEnquiry: boolean;
+    schoolId: number;
+    gender: Gender;
+    prefferdBatch: PrefferedBatch;
+}
+
+export enum Gender {
+    Male = 1,
+    Female = 2,
+}
+
+export enum PrefferedBatch {
+    Morning = 1,
+    Evening = 2,
+    AfterNoon = 2,
+}
+
+export class StudentListDto extends EntityBaseOfLong implements IStudentListDto {
+    firstName?: string | undefined;
+    midleName?: string | undefined;
+    lastName?: string | undefined;
+    address?: string | undefined;
+    courseStartDate!: moment.Moment;
+    courseEndDate?: moment.Moment | undefined;
+    emailAddress?: string | undefined;
+    mobileNo?: string | undefined;
+    isWatsApp!: boolean;
+    alternateNo?: string | undefined;
+    profilePicture?: string | undefined;
+    birthDate!: moment.Moment;
+    gender!: Gender;
+    batchId!: number;
+    batchName?: string | undefined;
+    batchStartDate!: moment.Moment;
+    batchEndDate?: moment.Moment | undefined;
+    batchBatchTime!: moment.Moment;
+    schoolId!: number;
+    schoolName?: string | undefined;
+
+    constructor(data?: IStudentListDto) {
+        super(data);
+    }
+
+    init(_data?: any) {
+        super.init(_data);
+        if (_data) {
+            this.firstName = _data["firstName"];
+            this.midleName = _data["midleName"];
+            this.lastName = _data["lastName"];
+            this.address = _data["address"];
+            this.courseStartDate = _data["courseStartDate"] ? moment(_data["courseStartDate"].toString()) : <any>undefined;
+            this.courseEndDate = _data["courseEndDate"] ? moment(_data["courseEndDate"].toString()) : <any>undefined;
+            this.emailAddress = _data["emailAddress"];
+            this.mobileNo = _data["mobileNo"];
+            this.isWatsApp = _data["isWatsApp"];
+            this.alternateNo = _data["alternateNo"];
+            this.profilePicture = _data["profilePicture"];
+            this.birthDate = _data["birthDate"] ? moment(_data["birthDate"].toString()) : <any>undefined;
+            this.gender = _data["gender"];
+            this.batchId = _data["batchId"];
+            this.batchName = _data["batchName"];
+            this.batchStartDate = _data["batchStartDate"] ? moment(_data["batchStartDate"].toString()) : <any>undefined;
+            this.batchEndDate = _data["batchEndDate"] ? moment(_data["batchEndDate"].toString()) : <any>undefined;
+            this.batchBatchTime = _data["batchBatchTime"] ? moment(_data["batchBatchTime"].toString()) : <any>undefined;
+            this.schoolId = _data["schoolId"];
+            this.schoolName = _data["schoolName"];
+        }
+    }
+
+    static fromJS(data: any): StudentListDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new StudentListDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["firstName"] = this.firstName;
+        data["midleName"] = this.midleName;
+        data["lastName"] = this.lastName;
+        data["address"] = this.address;
+        data["courseStartDate"] = this.courseStartDate ? this.courseStartDate.toISOString() : <any>undefined;
+        data["courseEndDate"] = this.courseEndDate ? this.courseEndDate.toISOString() : <any>undefined;
+        data["emailAddress"] = this.emailAddress;
+        data["mobileNo"] = this.mobileNo;
+        data["isWatsApp"] = this.isWatsApp;
+        data["alternateNo"] = this.alternateNo;
+        data["profilePicture"] = this.profilePicture;
+        data["birthDate"] = this.birthDate ? this.birthDate.toISOString() : <any>undefined;
+        data["gender"] = this.gender;
+        data["batchId"] = this.batchId;
+        data["batchName"] = this.batchName;
+        data["batchStartDate"] = this.batchStartDate ? this.batchStartDate.toISOString() : <any>undefined;
+        data["batchEndDate"] = this.batchEndDate ? this.batchEndDate.toISOString() : <any>undefined;
+        data["batchBatchTime"] = this.batchBatchTime ? this.batchBatchTime.toISOString() : <any>undefined;
+        data["schoolId"] = this.schoolId;
+        data["schoolName"] = this.schoolName;
+        super.toJSON(data);
+        return data; 
+    }
+}
+
+export interface IStudentListDto extends IEntityBaseOfLong {
+    firstName?: string | undefined;
+    midleName?: string | undefined;
+    lastName?: string | undefined;
+    address?: string | undefined;
+    courseStartDate: moment.Moment;
+    courseEndDate?: moment.Moment | undefined;
+    emailAddress?: string | undefined;
+    mobileNo?: string | undefined;
+    isWatsApp: boolean;
+    alternateNo?: string | undefined;
+    profilePicture?: string | undefined;
+    birthDate: moment.Moment;
+    gender: Gender;
+    batchId: number;
+    batchName?: string | undefined;
+    batchStartDate: moment.Moment;
+    batchEndDate?: moment.Moment | undefined;
+    batchBatchTime: moment.Moment;
+    schoolId: number;
+    schoolName?: string | undefined;
+}
+
+export class StudentDto extends EntityBaseOfLong implements IStudentDto {
+    firstName?: string | undefined;
+    midleName?: string | undefined;
+    lastName?: string | undefined;
+    address?: string | undefined;
+    courseStartDate!: moment.Moment;
+    courseEndDate?: moment.Moment | undefined;
+    emailAddress?: string | undefined;
+    mobileNo?: string | undefined;
+    isWatsApp!: boolean;
+    alternateNo?: string | undefined;
+    profilePicture?: string | undefined;
+    birthDate!: moment.Moment;
+    gender!: Gender;
+    batchId!: number;
+    batch?: BatchDto | undefined;
+    schoolId!: number;
+    school?: SchoolDto | undefined;
+
+    constructor(data?: IStudentDto) {
+        super(data);
+    }
+
+    init(_data?: any) {
+        super.init(_data);
+        if (_data) {
+            this.firstName = _data["firstName"];
+            this.midleName = _data["midleName"];
+            this.lastName = _data["lastName"];
+            this.address = _data["address"];
+            this.courseStartDate = _data["courseStartDate"] ? moment(_data["courseStartDate"].toString()) : <any>undefined;
+            this.courseEndDate = _data["courseEndDate"] ? moment(_data["courseEndDate"].toString()) : <any>undefined;
+            this.emailAddress = _data["emailAddress"];
+            this.mobileNo = _data["mobileNo"];
+            this.isWatsApp = _data["isWatsApp"];
+            this.alternateNo = _data["alternateNo"];
+            this.profilePicture = _data["profilePicture"];
+            this.birthDate = _data["birthDate"] ? moment(_data["birthDate"].toString()) : <any>undefined;
+            this.gender = _data["gender"];
+            this.batchId = _data["batchId"];
+            this.batch = _data["batch"] ? BatchDto.fromJS(_data["batch"]) : <any>undefined;
+            this.schoolId = _data["schoolId"];
+            this.school = _data["school"] ? SchoolDto.fromJS(_data["school"]) : <any>undefined;
+        }
+    }
+
+    static fromJS(data: any): StudentDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new StudentDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["firstName"] = this.firstName;
+        data["midleName"] = this.midleName;
+        data["lastName"] = this.lastName;
+        data["address"] = this.address;
+        data["courseStartDate"] = this.courseStartDate ? this.courseStartDate.toISOString() : <any>undefined;
+        data["courseEndDate"] = this.courseEndDate ? this.courseEndDate.toISOString() : <any>undefined;
+        data["emailAddress"] = this.emailAddress;
+        data["mobileNo"] = this.mobileNo;
+        data["isWatsApp"] = this.isWatsApp;
+        data["alternateNo"] = this.alternateNo;
+        data["profilePicture"] = this.profilePicture;
+        data["birthDate"] = this.birthDate ? this.birthDate.toISOString() : <any>undefined;
+        data["gender"] = this.gender;
+        data["batchId"] = this.batchId;
+        data["batch"] = this.batch ? this.batch.toJSON() : <any>undefined;
+        data["schoolId"] = this.schoolId;
+        data["school"] = this.school ? this.school.toJSON() : <any>undefined;
+        super.toJSON(data);
+        return data; 
+    }
+}
+
+export interface IStudentDto extends IEntityBaseOfLong {
+    firstName?: string | undefined;
+    midleName?: string | undefined;
+    lastName?: string | undefined;
+    address?: string | undefined;
+    courseStartDate: moment.Moment;
+    courseEndDate?: moment.Moment | undefined;
+    emailAddress?: string | undefined;
+    mobileNo?: string | undefined;
+    isWatsApp: boolean;
+    alternateNo?: string | undefined;
+    profilePicture?: string | undefined;
+    birthDate: moment.Moment;
+    gender: Gender;
+    batchId: number;
+    batch?: BatchDto | undefined;
+    schoolId: number;
+    school?: SchoolDto | undefined;
+}
+
+export class BatchDto extends EntityBaseOfLong implements IBatchDto {
+    name?: string | undefined;
+    startDate!: moment.Moment;
+    endDate?: moment.Moment | undefined;
+    batchTime!: moment.Moment;
+    students?: StudentDto[] | undefined;
+    photo?: string | undefined;
+    schoolId!: number;
+    school?: SchoolDto | undefined;
+
+    constructor(data?: IBatchDto) {
+        super(data);
+    }
+
+    init(_data?: any) {
+        super.init(_data);
+        if (_data) {
+            this.name = _data["name"];
+            this.startDate = _data["startDate"] ? moment(_data["startDate"].toString()) : <any>undefined;
+            this.endDate = _data["endDate"] ? moment(_data["endDate"].toString()) : <any>undefined;
+            this.batchTime = _data["batchTime"] ? moment(_data["batchTime"].toString()) : <any>undefined;
+            if (Array.isArray(_data["students"])) {
+                this.students = [] as any;
+                for (let item of _data["students"])
+                    this.students!.push(StudentDto.fromJS(item));
+            }
+            this.photo = _data["photo"];
+            this.schoolId = _data["schoolId"];
+            this.school = _data["school"] ? SchoolDto.fromJS(_data["school"]) : <any>undefined;
+        }
+    }
+
+    static fromJS(data: any): BatchDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new BatchDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["name"] = this.name;
+        data["startDate"] = this.startDate ? this.startDate.toISOString() : <any>undefined;
+        data["endDate"] = this.endDate ? this.endDate.toISOString() : <any>undefined;
+        data["batchTime"] = this.batchTime ? this.batchTime.toISOString() : <any>undefined;
+        if (Array.isArray(this.students)) {
+            data["students"] = [];
+            for (let item of this.students)
+                data["students"].push(item.toJSON());
+        }
+        data["photo"] = this.photo;
+        data["schoolId"] = this.schoolId;
+        data["school"] = this.school ? this.school.toJSON() : <any>undefined;
+        super.toJSON(data);
+        return data; 
+    }
+}
+
+export interface IBatchDto extends IEntityBaseOfLong {
+    name?: string | undefined;
+    startDate: moment.Moment;
+    endDate?: moment.Moment | undefined;
+    batchTime: moment.Moment;
+    students?: StudentDto[] | undefined;
+    photo?: string | undefined;
+    schoolId: number;
+    school?: SchoolDto | undefined;
 }
 
 export class EmployeeDto extends EntityBaseOfLong implements IEmployeeDto {

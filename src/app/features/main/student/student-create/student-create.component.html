@@ -1,6 +1,6 @@
 <form [formGroup]="entityForm" (ngSubmit)="save()">
   <div class="modal-header">
-    <h4 class="modal-title pull-left">Edit User Profile</h4>
+    <h4 class="modal-title pull-left">{{mode}} Student Profile</h4>
     <button type="button" class="close pull-right" aria-label="Close" (click)="close()">
       <span aria-hidden="true">&times;</span>
     </button>
@@ -20,7 +20,7 @@
         </div>
       </div>
       <div class="col-6 form-group">
-        <label for="password">select Gender <span style="color: red"> *</span></label>
+        <label for="password">Select Gender <span style="color: red"> *</span></label>
         <em *ngIf="entityForm?.get('midleName')?.touched && entityForm?.get('midleName')?.errors?.required">
           required</em>
         <drop-select [options]="genderList" formControlName="gender"></drop-select>
@@ -29,7 +29,7 @@
     <div class="row">
       <div class="col-6">
         <div class="form-group">
-          <label for="example-number">firstName</label>
+          <label for="example-number">first Name <span style="color: red"> *</span></label>
           <em *ngIf="entityForm?.get('firstName')?.touched && entityForm?.get('firstName')?.errors?.required">
             required</em>
           <input class="form-control" id="firstName" type="text" formControlName="firstName">
@@ -38,7 +38,7 @@
       </div>
       <div class="col-6">
         <div class="form-group">
-          <label for="example-color">LastName</label>
+          <label for="example-color">Last Name <span style="color: red"> *</span></label>
           <em *ngIf="entityForm?.get('lastName')?.touched && entityForm?.get('lastName')?.errors?.required">
             required</em>
           <input class="form-control" id="lastName" type="text" formControlName="lastName">
@@ -48,7 +48,7 @@
     <div class="row">
       <div class="col-6">
         <div class="form-group">
-          <label for="password">midleName <span style="color: red"> *</span></label>
+          <label for="password">Midle Name </label>
           <em *ngIf="entityForm?.get('midleName')?.touched && entityForm?.get('midleName')?.errors?.required">
             required</em>
           <input type="text" ngModel class="form-control" formControlName="midleName" id="midleName" />
@@ -61,11 +61,9 @@
           <em *ngIf=" entityForm?.get('emailAddress')?.touched &&  entityForm?.get('emailAddress')?.errors?.required">
             required</em>
           <em *ngIf="
-                   entityForm?.get('emailAddress')?.touched &&
-                   entityForm?.get('emailAddress')?.errors &&
-                   entityForm?.get('emailAddress')?.errors.notSame
+          entityForm?.get('emailAddress')?.touched &&  entityForm?.get('emailAddress')?.errors?.email
                    ">
-            password and confirm password not same</em>
+            Invalid Email address</em>
 
           <input type="email" class="form-control" formControlName="emailAddress" id="emailAddress" />
         </div>
@@ -74,7 +72,7 @@
     <div class="row">
       <div class="col-6">
         <div class="form-group">
-          <label for="password">selct school <span style="color: red"> *</span></label>
+          <label for="password">select school <span style="color: red"> *</span></label>
           <em *ngIf="entityForm?.get('schoolId')?.touched && entityForm?.get('schoolId')?.errors?.required">
             required</em>
           <drop-select [options]="schools" formControlName="schoolId"></drop-select>
@@ -94,7 +92,7 @@
     <div class="row">
       <div class="col-6">
         <div class="form-group">
-          <label for="example-number">Mobile </label>
+          <label for="example-number">Mobile <span style="color: red"></span></label>
           <em *ngIf="entityForm?.get('mobileNo')?.touched && entityForm?.get('mobileNo')?.errors?.required">
             required</em>
 
@@ -126,7 +124,7 @@
       </div>
       <div class="col-6">
         <div class="form-group">
-          <label for="example-color">Birth Date</label>
+          <label for="example-color">Birth Date <span style="color: red"></span></label>
           <em *ngIf="
                entityForm?.get('birthDate')?.touched &&
                entityForm?.get('birthDate')?.errors
@@ -141,7 +139,7 @@
     <div class="row">
       <div class="col-6">
         <div class="p-field p-col-12 p-md-6">
-          <label for="example-color">course Start Date </label>
+          <label for="example-color">course Start Date <span style="color: red"></span></label>
           <em
             *ngIf="entityForm?.get('courseStartDate')?.touched && entityForm?.get('courseStartDate')?.errors?.required">
             required</em>
@@ -159,7 +157,7 @@
       </div>
       <div class="col-6">
         <div class="form-group">
-          <label for="example-color">Course End Date</label>
+          <label for="example-color">Course End Date </label>
           <em *ngIf="entityForm?.get('courseEndDate')?.touched && entityForm?.get('courseEndDate')?.errors?.required">
             required</em>
           <em
@@ -194,7 +192,7 @@
     </div>
   </div>
 
-  <div class="modal-footer">
+  <div class="modal-footer" *ngIf="!isReadOnly">
     <button type="submit" class="btn btn-primary" [disabled]="entityForm?.invalid">Save</button>
     <button type="button" class="btn btn-secondary" (click)="close()">Close</button>
   </div>

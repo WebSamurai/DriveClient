@@ -18,6 +18,7 @@ export class ImageControlComponent implements OnInit, ControlValueAccessor {
   @Input() disabled = false;
   @Input() ReadOnly = false;
   @Input() defaultImage = 'profile.png';
+  private formats = ['data:image/png;base64,', 'data:image/png;base64,'];
   // tslint:disable-next-line:ban-types
   public onModelChange: Function = () => { };
   constructor() { }
@@ -54,7 +55,11 @@ export class ImageControlComponent implements OnInit, ControlValueAccessor {
   _handleReaderLoaded(e) {
     const reader = e.target;
     this.photo = reader.result;
-    const data = this.photo.replace('data:image/jpeg;base64,', '');
+    let data: any;
+    for (const format of this.formats) {
+      data = this.photo.replace(format, '');
+    }
+
     this.onModelChange(data);
 
   }

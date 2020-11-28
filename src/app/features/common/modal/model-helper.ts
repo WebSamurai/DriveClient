@@ -4,7 +4,7 @@ import { BsModalRef, ModalOptions, BsModalService } from 'ngx-bootstrap/modal';
 export class ModelHelper {
 
     constructor(private modalService: BsModalService) { }
-    public openModel<T>(component: any, entity: T): BsModalRef {
+    public openModel<T>(component: any, entity: T, isReadonly = false): BsModalRef {
         const modelOption = new ModalOptions();
         modelOption.backdrop = 'static';
         modelOption.keyboard = false;
@@ -13,6 +13,7 @@ export class ModelHelper {
         if (entity !== null) {
             ref.content.entity = entity;
             ref.content.mode = 'Edit';
+            ref.content.isReadOnly = isReadonly;
             ref.content.updateView();
         }
         return ref;

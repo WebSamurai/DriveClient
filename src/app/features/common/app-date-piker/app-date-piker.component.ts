@@ -3,7 +3,7 @@ import { AbstractControl, ControlValueAccessor, NG_VALIDATORS, NG_VALUE_ACCESSOR
 
 @Component({
   selector: 'app-date-piker',
-  template: `<input #datecontrol type="text" placeholder="Datepicker" class="form-control" [(ngModel)]="innerValue" [disabled]="disabled"
+  template: `<input #datecontrol type="text" placeholder="Datepicker" class="form-control" [ngModel]="innerValue" [disabled]="disabled"
    bsDatepicker (bsValueChange)="change($event)"  [bsConfig]="{containerClass:'theme-dark-blue', showClearButton: true, clearPosition: 'right' }"/>`,
   providers: [{
     provide: NG_VALUE_ACCESSOR,
@@ -21,6 +21,7 @@ export class AppDatePikerComponent implements OnInit, ControlValueAccessor, Vali
 
   // tslint:disable-next-line:variable-name
   private _innerValue: Date;
+  private initialvalue: Date = null;
   // tslint:disable-next-line:ban-types
   public onModelChange: Function = () => { };
   // tslint:disable-next-line:ban-types
@@ -44,6 +45,7 @@ export class AppDatePikerComponent implements OnInit, ControlValueAccessor, Vali
   }
   writeValue(obj: any): void {
     if (obj != null) {
+      this.initialvalue = obj.toDate();
       this._innerValue = obj.toDate();
     } else {
       this._innerValue = obj;
@@ -58,8 +60,13 @@ export class AppDatePikerComponent implements OnInit, ControlValueAccessor, Vali
   setDisabledState?(isDisabled: boolean): void {
     this.disabled = isDisabled;
   }
-  change(date) {
+  change(event) {
+    this.innerValue = event;
+    if (this.initialvalue?.toDateString() === this.innerValue?.toDateString()) {
+      return;
+    }
     this.onModelChange(this._innerValue);
+    this.initialvalue = undefined;
   }
 
   ngOnInit(): void {

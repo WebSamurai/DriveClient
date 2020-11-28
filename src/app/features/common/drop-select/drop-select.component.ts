@@ -18,10 +18,12 @@ export class DropSelectComponent implements OnInit, ControlValueAccessor {
   public value: any;
   @Input()
   options: SelectItem[] = [];
+  @Input() disabled = false;
   @Output()
   Change = new EventEmitter<SelectItem>();
   // tslint:disable-next-line:ban-types
   public onModelChange: Function = () => { };
+  public ontouched = () => { };
   constructor() { }
   writeValue(obj: any): void {
     this.value = obj;
@@ -30,11 +32,13 @@ export class DropSelectComponent implements OnInit, ControlValueAccessor {
     this.onModelChange = fn;
   }
   registerOnTouched(fn: any): void {
-
+    this.ontouched = fn;
   }
   setDisabledState?(isDisabled: boolean): void {
+    this.disabled = isDisabled;
   }
   public change(e) {
+    this.ontouched();
     this.onModelChange(this.value);
     this.Change.emit(this.value);
   }

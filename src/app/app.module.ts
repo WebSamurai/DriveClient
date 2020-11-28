@@ -11,6 +11,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastrModule } from 'ngx-toastr';
 import { JwtModule } from '@auth0/angular-jwt';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 export function TokenGetter() {
   return localStorage.getItem('token');
 }
@@ -28,6 +29,7 @@ export function TokenGetter() {
     ServiceProxyModule,
     BrowserAnimationsModule,
     ToastrModule.forRoot(),
+    BsDropdownModule.forRoot(),
     JwtModule.forRoot({
       config: {
         tokenGetter: TokenGetter

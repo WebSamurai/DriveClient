@@ -1,62 +1,65 @@
-
-<button   style="position: fixed;z-index: 1;top: 1rem" (click)="togleNavBar()" id="sidebarCollapse" type="button" class="btn btn-light bg-white rounded-pill shadow-sm px-4 mb-4"><i class="fa fa-bars mr-2"></i><small class="text-uppercase font-weight-bold">Toggle</small></button>
+<button style="position: fixed;z-index: 1;top: 1rem" (click)="togleNavBar()" id="sidebarCollapse" type="button"
+  class="btn btn-light bg-white rounded-pill shadow-sm px-4 mb-4"><i class="fa fa-bars mr-2"></i><small
+    class="text-uppercase font-weight-bold">Toggle</small></button>
 
 <div class="vertical-nav bg-white" id="sidebar" [ngClass]="{'active-nav': toggle}">
-   
-    <div class="py-4 px-3 mb-4 bg-light">
-      <div class="media d-flex align-items-center"><img src="assets/images/profile.png" alt="..." width="65" class="mr-3 rounded-circle img-thumbnail shadow-sm">
-        <div class="media-body">
-          <h4 class="m-0">{{user?.firstName}} {{user?.lastName}}  </h4>
-          
-          <p class="font-weight-light text-muted mb-0">( {{user?.userName}})</p>
-          
-        </div>
+
+  <div class="py-4 px-3 mb-4 bg-light">
+    <div class="media d-flex align-items-center"><img
+        [src]="user?.photo===undefined?'assets/images/profile.png':'data:image/jpeg;base64,'+ user?.photo" alt="..."
+        width="65" class="mr-3 rounded-circle img-thumbnail shadow-sm">
+      <div class="media-body">
+        <h4 class="m-0">{{user?.firstName}} {{user?.lastName}} </h4>
+
+        <p class="font-weight-light text-muted mb-0">( {{user?.userName}})</p>
+
       </div>
-      <a class="nav-link text-dark font-italic bg-light" routerLink="/main/user/profile" routerLinkActive="active">
-        <i class="fas fa-user-edit mr-3 "></i>  
-        Profile
-    </a>
     </div>
-  
-    <p class="text-gray font-weight-bold text-uppercase px-3 small pb-4 mb-0">Main</p>
-  
-    <ul  class="nav flex-column bg-white mb-0">
-       
-      <li class="nav-item">
-          
-        <a class="nav-link nav-link text-dark font-italic bg-light" routerLink="/main" routerLinkActive="active">
-            <i class="fas fa-tachometer-alt  mr-3"></i>
-            Dashboard <span class="sr-only">(current)</span></a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link nav-link text-dark font-italic bg-light" routerLink="/main/school" routerLinkActive="active">
-            <i class="fas fa-school  mr-3"></i>
-            School</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link nav-link text-dark font-italic bg-light"  routerLink="/main/student" routerLinkActive="active"> 
-            <i class="fas fa-user-graduate mr-3"></i>
-            Student</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link nav-link text-dark font-italic bg-light"   routerLink="/main/employee" routerLinkActive="active">
-            <i class="fas fa-users  mr-3"></i>
-            <!-- <i class="fa fa-th-large mr-3 text-dark fa-fw"></i> -->
-            Employee</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link nav-link text-dark font-italic bg-light"   routerLink="/main/enquiry" routerLinkActive="active">
-             <i class="fas fa-notes-medical  mr-3" ></i> Enqueiries</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link nav-link text-dark font-italic bg-light"   routerLink="/main/batch" routerLinkActive="active">
-             <i class="fas fa-chalkboard-teacher  mr-3"></i> Batches</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link nav-link text-dark font-italic bg-light"  routerLink="/main/vehicle" routerLinkActive="active"> 
-            <i class="fas fa-car mr-3"></i> Vehicles</a>
-      </li>
-      <!-- <li class="nav-item">
+    <a class="nav-link text-dark font-italic bg-light" routerLink="/main/user/profile" routerLinkActive="active">
+      <i class="fas fa-user-edit mr-3 "></i>
+      Profile
+    </a>
+  </div>
+
+  <p class="text-gray font-weight-bold text-uppercase px-3 small pb-4 mb-0">Main</p>
+
+  <ul class="nav flex-column bg-white mb-0">
+
+    <li class="nav-item">
+
+      <a class="nav-link nav-link text-dark font-italic bg-light" routerLink="/main" routerLinkActive="active">
+        <i class="fas fa-tachometer-alt  mr-3"></i>
+        Dashboard <span class="sr-only">(current)</span></a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link nav-link text-dark font-italic bg-light" routerLink="/main/school" routerLinkActive="active">
+        <i class="fas fa-school  mr-3"></i>
+        School</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link nav-link text-dark font-italic bg-light" routerLink="/main/student" routerLinkActive="active">
+        <i class="fas fa-user-graduate mr-3"></i>
+        Student</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link nav-link text-dark font-italic bg-light" routerLink="/main/employee" routerLinkActive="active">
+        <i class="fas fa-users  mr-3"></i>
+        <!-- <i class="fa fa-th-large mr-3 text-dark fa-fw"></i> -->
+        Employee</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link nav-link text-dark font-italic bg-light" routerLink="/main/enquiry" routerLinkActive="active">
+        <i class="fas fa-notes-medical  mr-3"></i> Enqueiries</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link nav-link text-dark font-italic bg-light" routerLink="/main/batch" routerLinkActive="active">
+        <i class="fas fa-chalkboard-teacher  mr-3"></i> Batches</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link nav-link text-dark font-italic bg-light" routerLink="/main/vehicle" routerLinkActive="active">
+        <i class="fas fa-car mr-3"></i> Vehicles</a>
+    </li>
+    <!-- <li class="nav-item">
         <a href="#" class="nav-link text-dark font-italic">
                   <i class="fa fa-address-card mr-3 text-primary fa-fw"></i>
                   About
@@ -74,9 +77,9 @@
                   Gallery
               </a>
       </li> -->
-    </ul>
-  
-    <!-- <p class="text-gray font-weight-bold text-uppercase px-3 small py-4 mb-0">Charts</p>
+  </ul>
+
+  <!-- <p class="text-gray font-weight-bold text-uppercase px-3 small py-4 mb-0">Charts</p>
   
     <ul class="nav flex-column bg-white mb-0">
       <li class="nav-item">
@@ -104,4 +107,4 @@
               </a>
       </li>
     </ul> -->
-  </div>
+</div>

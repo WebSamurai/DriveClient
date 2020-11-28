@@ -24,8 +24,12 @@ export class BatchListComponent implements OnInit {
     this.bsModelRef = this.modelService.openModel(CreateBatchComponent, null);
     this.bsModelRef.content.onUpdate.subscribe(x => this.batches.push(x));
   }
-  editBatch(data: BatchDto) {
+  edit(data: BatchDto) {
     this.bsModelRef = this.modelService.openModel(CreateBatchComponent, data);
     this.bsModelRef.content.onUpdate.subscribe(x => this.getBatches());
+  }
+  showMore(studentDto: BatchDto) {
+    this.bsModelRef = this.modelService.openModel(CreateBatchComponent, studentDto, true);
+    // this.bsModelRef.content.onUpdate.subscribe(x => this.getStudents());
   }
 }

@@ -19,6 +19,8 @@ import { StudentListComponent } from './student/student-list/student-list.compon
 import { StudentCreateComponent } from './student/student-create/student-create.component';
 import { BatchListComponent } from './batch/batch-list/batch-list.component';
 import { CreateBatchComponent } from './batch/create-batch/create-batch.component';
+import { EnquiryListComponent } from './enquiry/enquiry-list/enquiry-list.component';
+import { EnquiryCreateComponent } from './enquiry/enquiry-create/enquiry-create.component';
 @NgModule({
     imports: [
         AppCommonModule,
@@ -44,7 +46,10 @@ import { CreateBatchComponent } from './batch/create-batch/create-batch.componen
         StudentListComponent,
         StudentCreateComponent,
         BatchListComponent,
-        CreateBatchComponent
+        CreateBatchComponent,
+        EnquiryListComponent,
+        EnquiryCreateComponent
+
     ],
 })
 export class MainModule { }

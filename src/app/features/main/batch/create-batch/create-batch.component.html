@@ -21,7 +21,7 @@
                 <div class="form-group">
 
                     <label for="password">select school <span style="color: red"> *</span></label>
-                    <em *ngIf="entityForm?.get('schoolId')?.touched && entityForm?.get('schoolId')?.errors?.required">
+                    <em *ngIf="entityForm?.get('schoolId')?.dirty && entityForm?.get('schoolId')?.errors?.required">
                         required</em>
                     <drop-select [options]="schools" formControlName="schoolId"></drop-select>
 
@@ -69,7 +69,7 @@
             <div class="col-6">
                 <div class="form-group">
                     <label for="example-number">batchTime</label>
-                    <em *ngIf="entityForm?.get('batchTime')?.touched && entityForm?.get('batchTime')?.errors?.required">
+                    <em *ngIf="entityForm?.get('batchTime')?.dirty && entityForm?.get('batchTime')?.errors?.required">
                         required</em>
 
                     <!-- <p-calendar formControlName="batchTime" [timeOnly]="true" inputId="timeonly" [hourFormat]="12"
@@ -80,7 +80,6 @@
 
             </div>
             <div class="col-6">
-                {{entityForm.value|json}}
             </div>
         </div>
 
@@ -88,7 +87,7 @@
 
 
     </div>
-    <div class="modal-footer">
+    <div class="modal-footer" *ngIf="!isReadOnly">
         <button type="submit" class="btn btn-primary" [disabled]="entityForm?.invalid">Save</button>
         <button type="button" class="btn btn-secondary" (click)="close()">Close</button>
     </div>

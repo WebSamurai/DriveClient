@@ -8,7 +8,7 @@ import { VerticalNavbarComponent } from './vertical-navbar/vertical-navbar.compo
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { ImageControlComponent } from './image-control/image-control.component';
 import { TimepickerModule } from 'ngx-bootstrap/timepicker';
-import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
+import { BsDatepickerModule, } from 'ngx-bootstrap/datepicker';
 import { DropSelectComponent } from './drop-select/drop-select.component';
 import { TimePikerComponent } from './time-piker/time-piker.component';
 import { AppDatePikerComponent } from './app-date-piker/app-date-piker.component';

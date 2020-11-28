@@ -1,3 +1,4 @@
-<select class="form-control" id="exampleFormControlSelect1" [(ngModel)]="value" (change)="change($event)">
+<select [disabled]="disabled" class="form-control" id="exampleFormControlSelect1" [(ngModel)]="value"
+    (change)="change($event)">
     <option *ngFor="let item of options" value="{{item.value}}">{{item.label}}</option>
 </select>

@@ -20,9 +20,20 @@
             <td>{{item.startDate|date}}</td>
             <td>{{item.endDate|date}}</td>
             <td>{{item.batchTime| date:'shortTime'}}</td>
-            <td> <button class="btn btn-info" style="float: right" (click)="editBatch(item)">
-                    <i class="fas fa-user-edit mr-3"></i> Edit
-                </button></td>
+            <td class="text-right">
+
+                <a data-toggle="dropdown" class="btn btn-secondary img-circle">
+                    <i class="fas fa-chevron-circle-down" mr-3></i></a>
+                <div class="dropdown-menu">
+                    <a class="dropdown-item" (click)="edit(item)"> <i class=" fas fa-user-edit
+                                mr-3"></i>
+                        Edit</a>
+                    <a class="dropdown-item" (click)="showMore(item)"><i class="fas fa-external-link-alt mr-3"></i>
+                        view</a>
+
+                </div>
+
+            </td>
         </tr>
     </tbody>
 </table>

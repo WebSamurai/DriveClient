@@ -32,7 +32,7 @@ export class StudentCreateComponent extends ModelBase<StudentDto> implements OnI
       mobileNo: [this.entity.mobileNo, [Validators.required]],
       alternateNo: [this.entity.alternateNo],
       birthDate: [this.entity.birthDate, [Validators.required]],
-      isWatsApp: [this.entity.isWatsApp],
+      isWatsApp: [this.entity.isWatsApp ?? false],
       courseStartDate: [this.entity.courseStartDate, [Validators.required]],
       courseEndDate: [this.entity.courseEndDate, [Validators.required]],
       profilePicture: [this.entity.profilePicture],

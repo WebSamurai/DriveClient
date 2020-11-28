@@ -16,6 +16,7 @@ import * as ApiServiceProxies from './service.proxy';
         ApiServiceProxies.EmployeeSeviceProxy,
         ApiServiceProxies.AuthSeviceProxy,
         ApiServiceProxies.SelectSeviceProxy,
+        ApiServiceProxies.EnquirySeviceProxy,
         { provide: HTTP_INTERCEPTORS, useClass: AppHttpInterseptor, multi: true }
     ]
 })

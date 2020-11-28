@@ -4,6 +4,7 @@ import { BsModalRef } from 'ngx-bootstrap/modal';
 import { ToastrService } from 'ngx-toastr';
 import { UserDto, UserSeviceProxy } from 'src/app/features/services/service.proxy';
 import { isNil } from 'lodash';
+import { AppMessageService } from 'src/app/features/services/message-service';
 @Component({
   selector: 'app-edit-user-profile',
   templateUrl: './edit-user-profile.component.html',
@@ -17,7 +18,8 @@ export class EditUserProfileComponent implements OnInit {
     public bsModalRef: BsModalRef,
     private formBuilder: FormBuilder,
     private userService: UserSeviceProxy,
-    private messgeService: ToastrService) { }
+    private messgeService: ToastrService,
+    private appMessageService: AppMessageService) { }
   photo: any;
 
   ngOnInit(): void {
@@ -56,6 +58,7 @@ export class EditUserProfileComponent implements OnInit {
     this.userService.update(this.user).subscribe(x => {
       this.messgeService.success('User Updated successfully :)');
       this.onUpdate.emit(x);
+      this.appMessageService.setUserUpdate(x);
       this.bsModalRef.hide();
     });
   }

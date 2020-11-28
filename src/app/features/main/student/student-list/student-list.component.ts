@@ -30,5 +30,8 @@ export class StudentListComponent implements OnInit {
     this.bsModelRef = this.modelService.openModel(StudentCreateComponent, studentDto);
     this.bsModelRef.content.onUpdate.subscribe(x => this.getStudents());
   }
-  showMore(studentDto: StudentDto) { }
+  showMore(studentDto: StudentDto) {
+    this.bsModelRef = this.modelService.openModel(StudentCreateComponent, studentDto, true);
+    // this.bsModelRef.content.onUpdate.subscribe(x => this.getStudents());
+  }
 }

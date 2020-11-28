@@ -7,7 +7,7 @@ const TYPE_CONTROL_ACCESSOR = {
 };
 @Component({
   selector: 'app-time-piker',
-  template: `<timepicker [(ngModel)]="innerValue" (ngModelChange)="change()"></timepicker>`,
+  template: `<timepicker [(ngModel)]="innerValue" (ngModelChange)="change()" [disabled]="disabled"></timepicker> `,
   providers: [TYPE_CONTROL_ACCESSOR]
 })
 export class TimePikerComponent implements OnInit, ControlValueAccessor {
@@ -15,11 +15,14 @@ export class TimePikerComponent implements OnInit, ControlValueAccessor {
   @Input() disabled = false;
 
   public innerValue: Date;
+  private initialvalue: Date = null;
+
   // tslint:disable-next-line:ban-types
   public onModelChange: Function = () => { };
   constructor() { }
   writeValue(obj: any): void {
     if (obj != null) {
+      this.initialvalue = obj.toDate();
       this.innerValue = obj.toDate();
     } else {
       this.innerValue = null;
@@ -35,7 +38,11 @@ export class TimePikerComponent implements OnInit, ControlValueAccessor {
     this.disabled = isDisabled;
   }
   change() {
+    if (this.initialvalue?.toDateString() === this.innerValue?.toDateString()) {
+      return;
+    }
     this.onModelChange(this.innerValue);
+    this.initialvalue = undefined;
   }
 
   ngOnInit(): void {
