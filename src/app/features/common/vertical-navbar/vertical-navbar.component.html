@@ -6,8 +6,8 @@
 
   <div class="py-4 px-3 mb-4 bg-light">
     <div class="media d-flex align-items-center"><img
-        [src]="user?.photo===undefined?'assets/images/profile.png':'data:image/jpeg;base64,'+ user?.photo" alt="..."
-        width="65" class="mr-3 rounded-circle img-thumbnail shadow-sm">
+        [src]="isPhoto() ?'assets/images/profile.png':'data:image/jpeg;base64,'+ user?.photo" alt="..." width="65"
+        class="mr-3 rounded-circle img-thumbnail shadow-sm">
       <div class="media-body">
         <h4 class="m-0">{{user?.firstName}} {{user?.lastName}} </h4>
 
@@ -50,6 +50,11 @@
     <li class="nav-item">
       <a class="nav-link nav-link text-dark font-italic bg-light" routerLink="/main/enquiry" routerLinkActive="active">
         <i class="fas fa-notes-medical  mr-3"></i> Enqueiries</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link nav-link text-dark font-italic bg-light" routerLink="/main/schedule-template"
+        routerLinkActive="active">
+        <i class="fas fa-chalkboard-teacher  mr-3"></i> Batche schedule Template</a>
     </li>
     <li class="nav-item">
       <a class="nav-link nav-link text-dark font-italic bg-light" routerLink="/main/batch" routerLinkActive="active">

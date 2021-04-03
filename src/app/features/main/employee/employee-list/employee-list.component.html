@@ -10,9 +10,9 @@
                     <th scope="col">First Name</th>
                     <th scope="col">Midle name</th>
                     <th scope="col">last name</th>
-                    <th scope="col">courseStartDate</th>
-                    <th scope="col">batch name</th>
-                    <th scope="col"> Batch time</th>
+                    <th scope="col">emailAddress</th>
+                    <th scope="col">mobileNo</th>
+                    <th scope="col"> jobType</th>
                     <th scope="row" class="text-right">
                         <a class="btn btn-secondary img-circle" (click)="openAdd()"> <i
                                 class="fas fa-plus-square  "></i></a>
@@ -21,7 +21,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr *ngFor="let item of students">
+                <tr *ngFor="let item of employees">
                     <th scope="row">
                         <img [src]="item?.profilePicture===undefined?'assets/images/profile.png':'data:image/jpeg;base64,'+ item?.profilePicture"
                             alt="..." width="50" class="mr-3 rounded-circle img-thumbnail shadow-sm">
@@ -29,15 +29,15 @@
                     <td>{{item.firstName}}</td>
                     <td>{{item.midleName}}</td>
                     <td>{{item.lastName}}</td>
-                    <td>{{item.courseStartDate|date}}</td>
-                    <td>{{item.batchName}}</td>
-                    <td>{{item.batchBatchTime|date:'shortTime'}}</td>
+                    <td>{{item.emailAddress}}</td>
+                    <td>{{item.mobileNo}}</td>
+                    <td>{{getJobType(item.jobType)}}</td>
                     <td class="text-right">
 
                         <a data-toggle="dropdown" class="btn btn-secondary img-circle">
                             <i class="fas fa-chevron-circle-down" mr-3></i></a>
                         <div class="dropdown-menu">
-                            <a class="dropdown-item" (click)="editStudent(item)"> <i class=" fas fa-user-edit
+                            <a class="dropdown-item" (click)="edit(item)"> <i class=" fas fa-user-edit
                                 mr-3"></i>
                                 Edit</a>
                             <a class="dropdown-item" (click)="showMore(item)"><i
@@ -51,4 +51,3 @@
         </table>
     </div>
 </div>
-<app-schedule-list></app-schedule-list>

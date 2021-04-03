@@ -4,9 +4,9 @@
             <tr>
                 <th scope="col">Id</th>
                 <th scope="col">Name</th>
-                <th scope="col">Start Date</th>
-                <th scope="col">End Date</th>
-                <th scope="col">Batch time</th>
+                <th scope="col">description</th>
+                <th scope="col">Practical Sessions</th>
+                <th scope="col">Theory Sessions</th>
                 <th scope="col">
                     <button class="btn btn-secondary" style="float: right" (click)="openAdd()">
                         <i class="fas fa-plus-square  mr-3"></i> Add
@@ -15,12 +15,12 @@
             </tr>
         </thead>
         <tbody>
-            <tr *ngFor="let item of batches">
+            <tr *ngFor="let item of batchtTemplates">
                 <th scope="row">{{item.id}}</th>
                 <td>{{item.name}}</td>
-                <td>{{item.startDate|date}}</td>
-                <td>{{item.endDate|date}}</td>
-                <td>{{item.batchTime| date:'shortTime'}}</td>
+                <td>{{item.description}}</td>
+                <td>{{item.numberOfPracticalSession}}</td>
+                <td>{{item.numberOfTheorySession}}</td>
                 <td class="text-right">
 
                     <a data-toggle="dropdown" class="btn btn-secondary img-circle">

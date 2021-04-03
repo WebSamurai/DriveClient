@@ -29,7 +29,7 @@ import { AppDatePikerComponent } from './app-date-piker/app-date-piker.component
         ImageControlComponent,
         DropSelectComponent,
         AppDatePikerComponent,
-        TimePikerComponent
+        TimePikerComponent,
     ],
     exports: [
         NavbarComponent,
@@ -38,7 +38,7 @@ import { AppDatePikerComponent } from './app-date-piker/app-date-piker.component
         ImageControlComponent,
         DropSelectComponent,
         AppDatePikerComponent,
-        TimePikerComponent,
+        TimePikerComponent
     ]
 })
 export class AppCommonModule {

@@ -13,6 +13,7 @@ export class CreateBatchComponent extends ModelBase<BatchDto> implements OnInit 
 
 
   schools: SelectItem<number>[] = [];
+  batchTemplates: SelectItem<number>[] = [];
   constructor(injector: Injector, private batchService: BatchSeviceProxy) {
     super(injector);
     this.entity = new BatchDto();
@@ -24,12 +25,24 @@ export class CreateBatchComponent extends ModelBase<BatchDto> implements OnInit 
 
   }
   fillDropdowns() {
-    this.schools.push({ value: -1, label: 'Please Select school' });
+    this.bindSchool();
+    this.bindBatchTemplateSchool();
+
+  }
+
+  private bindSchool() {
+    this.schools.push({ value: null, label: 'Please Select school' });
 
     this.selectService.getStudy().subscribe(x => {
       x.map(y => this.schools.push({ value: y.value, label: y.label }));
     });
+  }
+  private bindBatchTemplateSchool() {
+    this.batchTemplates.push({ value: null, label: 'Please Select school' });
 
+    this.selectService.getBatchScheduleTemplate().subscribe(x => {
+      x.map(y => this.batchTemplates.push({ value: y.value, label: y.label }));
+    });
   }
 
   public buildForm() {
@@ -38,7 +51,8 @@ export class CreateBatchComponent extends ModelBase<BatchDto> implements OnInit 
       startDate: [this.entity.startDate, [Validators.required, this.validateDates.bind(this)]],
       endDate: [this.entity.endDate, [Validators.required, this.validateDates.bind(this)]],
       schoolId: [this.entity.schoolId, [Validators.required]],
-      batchTime: [this.entity.batchTime, [Validators.required]]
+      batchTime: [this.entity.batchTime, [Validators.required]],
+      batchScheduleTemplateId: [this.entity.batchScheduleTemplateId, [Validators.required]]
     });
   }
   validateDates(control: FormControl) {

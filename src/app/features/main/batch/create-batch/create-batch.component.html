@@ -50,7 +50,8 @@
             </div>
             <div class="col-6">
                 <div class="form-group">
-                    <label for="example-color">End Date</label>
+                    <label for="example-color">End Date
+                    </label>
                     <em *ngIf="entityForm?.get('endDate')?.touched && entityForm?.get('endDate')?.errors?.required">
                         required</em>
                     <em *ngIf="entityForm?.get('endDate')?.touched && entityForm?.get('endDate')?.errors?.dateInvalid">
@@ -80,6 +81,14 @@
 
             </div>
             <div class="col-6">
+                <div class="form-group">
+
+                    <label for="password">select BatchScheduleTemplate <span style="color: red"> *</span></label>
+                    <em *ngIf="entityForm?.get('schoolId')?.dirty && entityForm?.get('schoolId')?.errors?.required">
+                        required</em>
+                    <drop-select [options]="batchTemplates" formControlName="batchScheduleTemplateId"></drop-select>
+
+                </div>
             </div>
         </div>
 
@@ -87,8 +96,10 @@
 
 
     </div>
+    <!-- <app-form-button (close)="close()" [isReadOnly]="isReadOnly"></app-form-button> -->
     <div class="modal-footer" *ngIf="!isReadOnly">
-        <button type="submit" class="btn btn-primary" [disabled]="entityForm?.invalid">Save</button>
+        <button type="submit" class="btn btn-primary"
+            [disabled]="entityForm?.invalid || entityForm?.pristine">Save</button>
         <button type="button" class="btn btn-secondary" (click)="close()">Close</button>
     </div>
 </form>

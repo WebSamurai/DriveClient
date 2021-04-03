@@ -1,13 +1,31 @@
 <form [formGroup]="entityForm" (ngSubmit)="save()">
     <div class="modal-header">
-        <h4 class="modal-title pull-left">{{mode}} Enquiry </h4>
+        <h4 class="modal-title pull-left">{{mode}} Employee Profile</h4>
         <button type="button" class="close pull-right" aria-label="Close" (click)="close()">
             <span aria-hidden="true">&times;</span>
         </button>
     </div>
     <div class="modal-body">
 
+        <div class="row">
 
+            <div class="col-6 form-group">
+                <div class="media d-flex align-items-center">
+
+                    <app-image-control formControlName="profilePicture"></app-image-control>
+                    <div class="media-body">
+
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-6 form-group">
+                <label for="password">Select Gender <span style="color: red"> *</span></label>
+                <em *ngIf="entityForm?.get('gender')?.touched && entityForm?.get('gender')?.errors?.required">
+                    required</em>
+                <drop-select [options]="genderList" formControlName="gender"></drop-select>
+            </div>
+        </div>
         <div class="row">
             <div class="col-6">
                 <div class="form-group">
@@ -53,23 +71,6 @@
             </div>
         </div>
         <div class="row">
-
-            <div class="col-6 form-group">
-                <label for="password">Select Preffered Batch <span style="color: red"> *</span></label>
-                <em
-                    *ngIf="entityForm?.get('prefferdBatch')?.touched && entityForm?.get('prefferdBatch')?.errors?.required">
-                    required</em>
-                <drop-select [options]="prefferdbatches" formControlName="prefferdBatch"></drop-select>
-            </div>
-            <div class=" col-6 form-group">
-                <label for="password">Select Gender <span style="color: red"> *</span></label>
-                <em *ngIf="entityForm?.get('gender')?.touched && entityForm?.get('gender')?.errors">
-                    required</em>
-                <drop-select [options]="genderList" formControlName="gender"></drop-select>
-            </div>
-        </div>
-
-        <div class="row">
             <div class="col-6">
                 <div class="form-group">
                     <label for="example-number">Mobile <span style="color: red"></span></label>
@@ -96,9 +97,10 @@
         <div class="row">
             <div class="col-6">
                 <div class="form-group">
-                    <label for="example-number"> Is WatsApp : </label>
-
-                    <input id="mobileNo" class="form-control" type="checkbox" formControlName="isWatsApp">
+                    <label for="example-number"> Select Job Type: <span style="color: red"> *</span></label>
+                    <em *ngIf="entityForm?.get('jobType')?.touched && entityForm?.get('jobType')?.errors?.required">
+                        required</em>
+                    <drop-select [options]="jobTypes" formControlName="jobType"></drop-select>
                 </div>
 
             </div>
@@ -116,6 +118,7 @@
                 </div>
             </div>
         </div>
+
         <div class="row">
             <div class="col-12">
                 <div class="p-field p-col-12 p-md-6">
@@ -141,7 +144,7 @@
 
     <div class="modal-footer" *ngIf="!isReadOnly">
         <button type="submit" class="btn btn-primary"
-            [disabled]="entityForm?.invalid || entityForm?.pristine">Save</button>
+            [disabled]="entityForm?.invalid ||entityForm?.pristine">Save</button>
         <button type="button" class="btn btn-secondary" (click)="close()">Close</button>
     </div>
 </form>

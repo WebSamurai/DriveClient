@@ -1,4 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { isNil } from 'lodash';
 import { Observable, Subscription } from 'rxjs';
 import { AppMessageService } from '../../services/message-service';
 import { UserDto, UserSeviceProxy } from '../../services/service.proxy';
@@ -34,7 +35,9 @@ export class VerticalNavbarComponent implements OnInit, OnDestroy {
     const userId = this.tokenService.GetUser().id;
     this.userService.get(userId).subscribe(x => this.user = x);
   }
-
+  isPhoto() {
+    return isNil(this.user?.photo) || this.user?.photo === '';
+  }
   public togleNavBar() {
     this.toggle = !this.toggle;
   }

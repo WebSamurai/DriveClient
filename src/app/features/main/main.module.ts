@@ -21,6 +21,14 @@ import { BatchListComponent } from './batch/batch-list/batch-list.component';
 import { CreateBatchComponent } from './batch/create-batch/create-batch.component';
 import { EnquiryListComponent } from './enquiry/enquiry-list/enquiry-list.component';
 import { EnquiryCreateComponent } from './enquiry/enquiry-create/enquiry-create.component';
+import { BatcheScheduleTemplateComponent } from './batch-schedule/batche-schedule-template/batche-schedule-template.component';
+// tslint:disable-next-line:max-line-length
+import { BatcheScheduleTemplateListComponent } from './batch-schedule/batche-schedule-template-list/batche-schedule-template-list.component';
+import { BatcheScheduleTemplateCreateComponent } from './batch-schedule/batche-schedule-template-create/batche-schedule-template-create.component';
+import { EmployeeListComponent } from './employee/employee-list/employee-list.component';
+import { EmployeeCreateComponent } from './employee/employee-create/employee-create.component';
+import { EmployeeComponent } from './employee/employee.component';
+import { ScheduleListComponent } from './student/schedule-list/schedule-list.component';
 @NgModule({
     imports: [
         AppCommonModule,
@@ -48,7 +56,15 @@ import { EnquiryCreateComponent } from './enquiry/enquiry-create/enquiry-create.
         BatchListComponent,
         CreateBatchComponent,
         EnquiryListComponent,
-        EnquiryCreateComponent
+        EnquiryCreateComponent,
+        BatcheScheduleTemplateComponent,
+        BatcheScheduleTemplateListComponent,
+        BatcheScheduleTemplateCreateComponent,
+        EmployeeCreateComponent,
+        EmployeeListComponent,
+        EmployeeComponent,
+        ScheduleListComponent
+
 
     ],
 })

@@ -23,6 +23,7 @@ export class RegisterComponent implements OnInit {
   public emailAddress: FormControl;
   public lastName: FormControl;
   public firstName: FormControl;
+  public schoolName: FormControl;
   public showAllValidaiton: boolean;
   user = new UserDto();
   constructor(
@@ -54,7 +55,9 @@ export class RegisterComponent implements OnInit {
     this.firstName = new FormControl(this.user.firstName, [
       Validators.required,
     ]);
-
+    this.schoolName = new FormControl(this.user.schoolName, [
+      Validators.required,
+    ]);
     this.userForm = new FormGroup({
       userName: this.userName,
       password: this.password,
@@ -62,6 +65,8 @@ export class RegisterComponent implements OnInit {
       emailAddress: this.emailAddress,
       lastName: this.lastName,
       firstName: this.firstName,
+      schoolName: this.schoolName
+
     });
   }
   checkPasswords = (control: FormControl) => {

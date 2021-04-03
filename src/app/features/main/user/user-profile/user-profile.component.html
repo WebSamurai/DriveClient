@@ -1,47 +1,47 @@
-
 <div class="card">
     <div class="card-header" style="text-align: left;">
-        <h5 >User Profile  <button class="btn btn-primary" style="float: right" (click)="editProfile()">  <i class="fas fa-user-edit mr-3 "></i> edit</button></h5>
-       
+        <h5>User Profile <button class="btn btn-primary" style="float: right" (click)="editProfile()"> <i
+                    class="fas fa-user-edit mr-3 "></i> edit</button></h5>
+
     </div>
 
-  
+
     <div class="card-body">
-      <h5 class="card-title">Special title treatment</h5>
-  
-  <div class="card-title">
+        <h5 class="card-title">Special title treatment</h5>
 
-    <div class="row">
-        <div class="col-4 form-group">
-            <div class="media d-flex align-items-center">
-                <img [src]="user?.photo===undefined?'assets/images/profile.png':'data:image/jpeg;base64,'+ user?.photo" alt="..." width="65" class="mr-3 rounded-circle img-thumbnail shadow-sm">
-                <div class="media-body">
-                  <h4 class="m-0">User Name : {{user?.userName}}  </h4>
-                  
+        <div class="card-title">
+
+            <div class="row">
+                <div class="col-4 form-group">
+                    <div class="media d-flex align-items-center">
+                        <img [src]="isPhoto() ?'assets/images/profile.png':'data:image/jpeg;base64,'+ user?.photo"
+                            alt="..." width="65" class="mr-3 rounded-circle img-thumbnail shadow-sm">
+                        <div class="media-body">
+                            <h4 class="m-0">User Name : {{user?.userName}} </h4>
+
+                        </div>
+                    </div>
                 </div>
-              </div>
-        </div>
-        <div class="col-4 form-group">
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-4">
-            <h5 > First Name : {{user?.firstName}}</h5>
-        </div>
-        <div class="col-4">
-            <h5 >Last Name : {{user?.lastName}}</h5>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-4">
-            <h5 >Email Address : {{user?.emailAddress}}</h5>
-        </div>
-        <div class="col-4">
-            <h5 >Mobile Numer : {{user?.emailAddress}}</h5>
-        </div>
-    </div>
-  
-  </div>
-    </div>
-  </div>
+                <div class="col-4 form-group">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-4">
+                    <h5> First Name : {{user?.firstName}}</h5>
+                </div>
+                <div class="col-4">
+                    <h5>Last Name : {{user?.lastName}}</h5>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-4">
+                    <h5>Email Address : {{user?.emailAddress}}</h5>
+                </div>
+                <div class="col-4">
+                    <h5>Mobile Numer : {{user?.emailAddress}}</h5>
+                </div>
+            </div>
 
+        </div>
+    </div>
+</div>

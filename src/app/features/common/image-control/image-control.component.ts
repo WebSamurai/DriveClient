@@ -1,6 +1,6 @@
 import { Component, forwardRef, Input, OnInit } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { isNull } from 'lodash';
+import { isNil, isNull } from 'lodash';
 const TYPE_CONTROL_ACCESSOR = {
   provide: NG_VALUE_ACCESSOR,
   useExisting: forwardRef(() => ImageControlComponent),
@@ -18,12 +18,12 @@ export class ImageControlComponent implements OnInit, ControlValueAccessor {
   @Input() disabled = false;
   @Input() ReadOnly = false;
   @Input() defaultImage = 'profile.png';
-  private formats = ['data:image/png;base64,', 'data:image/png;base64,'];
+  private formats = ['data:image/png;base64,', 'data:image/jpg;base64,', 'data:image/jpeg;base64,'];
   // tslint:disable-next-line:ban-types
   public onModelChange: Function = () => { };
   constructor() { }
   writeValue(obj: any): void {
-    if (isNull(obj)) {
+    if (this.isPhoto(obj)) {
       this.photo = `assets/images/${this.defaultImage}`;
     }
     else {
@@ -40,6 +40,9 @@ export class ImageControlComponent implements OnInit, ControlValueAccessor {
   }
 
   ngOnInit(): void {
+  }
+  isPhoto(obj: any) {
+    return isNil(obj) || obj === '';
   }
   handleInputChange(e) {
     const file = e.dataTransfer ? e.dataTransfer.files[0] : e.target.files[0];

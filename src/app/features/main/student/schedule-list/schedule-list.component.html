@@ -1,0 +1,83 @@
+<div class="card">
+    <div class="card-header">
+        Students
+    </div>
+    <div class="card-body">
+        <div class="row ">
+            <div class="col-md-6 col-xl-3 " style="margin-top: 1rem;" *ngFor="let item of schedules">
+                <!-- project card -->
+                <div class="card d-block">
+                    <div class="card-body" style="height: 4rem;">
+                        <div class="float-right">
+                            <span class="font-weight-bolder m-3">{{item.scheduleDate|date}}</span>
+                            <a data-toggle="dropdown" class="">
+                                <i class="fas fa-chevron-circle-down" mr-3></i></a>
+                            <div class="dropdown-menu">
+                                <a class="dropdown-item"> <i class=" fas fa-user-edit
+                            mr-3"></i>
+                                    Edit</a>
+                                <a class="dropdown-item"><i class="fas fa-external-link-alt mr-3"></i> view</a>
+
+                            </div>
+                        </div>
+                        <h4 class="inline-block">
+                            {{item.scheduletype==0?'Practical':'Theory'}}
+                        </h4>
+
+                        <!-- project title-->
+
+
+                    </div> <!-- end card-body-->
+                    <div class="card-body">
+                        <div>
+                            <span class="badge  mb-3"
+                                [ngClass]="{'badge-success': (item.isAttended && item.isInstructorSignOff),'badge-secondary': !(item.isAttended && item.isInstructorSignOff)}">{{getStatus(item)}}
+                            </span>
+
+
+                        </div>
+                        <div>
+                            <span class="pr-2 text-nowrap mb-2 d-inline-block">
+                                <i class="mdi mdi-format-list-bulleted-type text-muted"></i>
+                                Session time: <b>{{item.scheduleDate|date:'shortTime'}}</b>
+                            </span>
+                        </div>
+                        <div>
+                            <span class="pr-2 text-nowrap mb-2 d-inline-block">
+                                <i class="mdi mdi-format-list-bulleted-type text-muted"></i>
+                                <b> Sign Of by Instructor : <i *ngIf="item.isInstructorSignOff"
+                                        class="fas fa-check-square  mr-3" style="color: green;"></i>
+                                    <i *ngIf="!item.isInstructorSignOff" class="fas fa-times-circle  mr-3"
+                                        style="color: red;"></i></b>
+                            </span>
+                        </div>
+                        <div>
+                            <span class="pr-2 text-nowrap mb-2 d-inline-block">
+                                <i class="mdi mdi-format-list-bulleted-type text-muted"></i>
+                                <b> Sign Of by Student :
+                                    <i *ngIf="item.isAttended" class="fas fa-check-square  mr-3"
+                                        style="color: green;    margin-left: 1.3rem;"></i>
+                                    <i *ngIf="!item.isAttended" class="fas fa-times-circle  mr-3"
+                                        style="color: red;    margin-left: 1.3rem;"></i>
+                                </b>
+                            </span>
+                        </div>
+                    </div>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item p-3">
+                            <!-- project progress-->
+                            <p class="mb-2 font-weight-bold">Progress <span class="float-right">
+                                    {{(item.isAttended && item.isInstructorSignOff)?'100%':'0%'}}</span></p>
+                            <div class="progress progress-sm">
+                                <div class="progress-bar" role="progressbar" aria-valuenow="10" aria-valuemin="0"
+                                    aria-valuemax="100"
+                                    style="width:{{(item.isAttended && item.isInstructorSignOff)?'100%':'0%'}};">
+                                </div>
+                            </div><!-- /.progress -->
+                        </li>
+                    </ul>
+                </div> <!-- end card-->
+            </div> <!-- end col -->
+        </div>
+    </div>
+</div>

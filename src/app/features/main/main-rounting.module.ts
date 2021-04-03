@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { AuthGruard } from 'src/app/app-authguard';
+import { BatcheScheduleTemplateComponent } from './batch-schedule/batche-schedule-template/batche-schedule-template.component';
 import { BatchComponent } from './batch/batch.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { EmployeeComponent } from './employee/employee.component';
@@ -29,7 +30,8 @@ import { VehicleComponent } from './vehicle/vehicle.component';
                     { path: 'employee', component: EmployeeComponent },
                     { path: 'dashboard', component: DashboardComponent },
                     { path: 'user/profile', component: UserProfileComponent },
-                    { path: 'user/user/edit', component: EditUserProfileComponent },
+                    { path: 'schedule-template', component: BatcheScheduleTemplateComponent },
+
                 ]
 
             },

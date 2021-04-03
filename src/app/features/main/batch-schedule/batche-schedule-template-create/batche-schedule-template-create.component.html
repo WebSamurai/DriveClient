@@ -1,0 +1,65 @@
+<form [formGroup]="entityForm" (ngSubmit)="save()">
+    <div class="modal-header">
+        <h4 class="modal-title pull-left">{{mode}} Batch</h4>
+        <button type="button" class="close pull-right" aria-label="Close" (click)="close()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+
+        <div class="row">
+            <div class="col-6">
+                <div class="form-group">
+                    <label for="example-number">Batch Scheule Template Name<span style="color: red"> *</span> </label>
+                    <em *ngIf="entityForm?.get('name')?.touched && entityForm?.get('name')?.errors?.required">
+                        required</em>
+                    <input class="form-control" id="name" type="text" formControlName="name">
+                </div>
+
+            </div>
+            <div class="col-6">
+                <div class="form-group">
+
+                    <label for="description">Description</label>
+                    <em
+                        *ngIf="entityForm?.get('description')?.dirty && entityForm?.get('description')?.errors?.required">
+                        required</em>
+                    <input class="form-control" id="name" type="text" formControlName="description">
+
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-6">
+                <div class="p-field p-col-12 p-md-6">
+                    <label for="example-color">Number Of Practical Sessions<span style="color: red"> *</span> </label>
+                    <em
+                        *ngIf="entityForm?.get('numberOfPracticalSession')?.touched && entityForm?.get('numberOfPracticalSession')?.errors?.required">
+                        required</em>
+
+                    <input class="form-control" id="name" type="number" formControlName="numberOfPracticalSession">
+
+                </div>
+
+
+            </div>
+            <div class="col-6">
+                <div class="p-field p-col-12 p-md-6">
+                    <label for="example-color">Number Of Theroy Sessions<span style="color: red"> *</span> </label>
+                    <em
+                        *ngIf="entityForm?.get('numberOfTheorySession')?.touched && entityForm?.get('numberOfTheorySession')?.errors?.required">
+                        required</em>
+
+                    <input class="form-control" id="name" type="number" formControlName="numberOfTheorySession">
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="modal-footer" *ngIf="!isReadOnly">
+        <button type="submit" class="btn btn-primary"
+            [disabled]="entityForm?.invalid || entityForm?.pristine">Save</button>
+        <button type="button" class="btn btn-secondary" (click)="close()">Close</button>
+    </div>
+</form>

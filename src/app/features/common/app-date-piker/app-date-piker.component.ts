@@ -34,8 +34,6 @@ export class AppDatePikerComponent implements OnInit, ControlValueAccessor, Vali
   }
   set innerValue(value: any) {
     this._innerValue = value;
-    this.onChanged(this._innerValue);
-    this.onTouched();
   }
   get innerValue() {
     return this._innerValue;
@@ -49,6 +47,7 @@ export class AppDatePikerComponent implements OnInit, ControlValueAccessor, Vali
       this._innerValue = obj.toDate();
     } else {
       this._innerValue = obj;
+      this.initialvalue = obj;
     }
   }
   registerOnChange(fn: any): void {
@@ -62,11 +61,13 @@ export class AppDatePikerComponent implements OnInit, ControlValueAccessor, Vali
   }
   change(event) {
     this.innerValue = event;
+    this.onvaliChange();
     if (this.initialvalue?.toDateString() === this.innerValue?.toDateString()) {
       return;
     }
+    this.onTouched();
     this.onModelChange(this._innerValue);
-    this.initialvalue = undefined;
+    this.initialvalue = null;
   }
 
   ngOnInit(): void {

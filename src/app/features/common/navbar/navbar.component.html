@@ -1,15 +1,17 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-<div class="container">
+  <div class="container">
 
-    <a class="navbar-brand"  routerLink="/main" >Drive Management</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <a class="navbar-brand" routerLink="/main">Drive Management</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
-  
+
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav mr-auto">
         <li class="nav-item active">
-          <a class="nav-link" routerLink="/main" routerLinkActive="active">Dashboard <span class="sr-only">(current)</span></a>
+          <a class="nav-link" routerLink="/main" routerLinkActive="active">Dashboard <span
+              class="sr-only">(current)</span></a>
         </li>
         <li class="nav-item">
           <a class="nav-link" routerLink="/main/school" routerLinkActive="active">School</a>
@@ -18,22 +20,26 @@
           <a class="nav-link" routerLink="/main/student" routerLinkActive="active"> Student</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link"  routerLink="/main/employee" routerLinkActive="active">Employee</a>
+          <a class="nav-link" routerLink="/main/employee" routerLinkActive="active">Employee</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link"  routerLink="/main/enquiry" routerLinkActive="active">Enqueiries</a>
+          <a class="nav-link" routerLink="/main/enquiry" routerLinkActive="active">Enqueiries</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link"  routerLink="/main/batch" routerLinkActive="active">Batches</a>
+          <a class="nav-link" routerLink="/main/schedule-template" routerLinkActive="active">Batche schedule
+            Template</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/main/batch" routerLinkActive="active">Batches</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" routerLink="/main/vehicle" routerLinkActive="active">Vehicles</a>
         </li>
       </ul>
-        <span class="navbar-brand">  Welcome {{userName}}</span>
-      <a class="nav-link"  style="cursor: pointer;" routerLinkActive="active"  (click)="logOut()">Log Out</a>
-    
+      <span class="navbar-brand"> Welcome {{userName}}</span>
+      <a class="nav-link" style="cursor: pointer;" routerLinkActive="active" (click)="logOut()">Log Out</a>
+
     </div>
-</div>
-   
-  </nav>
+  </div>
+
+</nav>

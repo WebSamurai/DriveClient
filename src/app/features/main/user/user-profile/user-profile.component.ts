@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { isNil } from 'lodash';
 import { BsModalRef, BsModalService, ModalOptions } from 'ngx-bootstrap/modal';
 import { UserDto, UserSeviceProxy } from 'src/app/features/services/service.proxy';
 import { TokenService } from 'src/app/features/services/token-service';
@@ -35,5 +36,8 @@ export class UserProfileComponent implements OnInit {
     this.bsModalRef.content.updateView();
     this.bsModalRef.content.onUpdate.subscribe(x => this.user = x);
 
+  }
+  isPhoto() {
+    return isNil(this.user?.photo) || this.user?.photo === '';
   }
 }

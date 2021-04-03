@@ -62,6 +62,9 @@ export class EditUserProfileComponent implements OnInit {
       this.bsModalRef.hide();
     });
   }
+  isPhoto() {
+    return isNil(this.user?.photo) || this.user?.photo === '';
+  }
   getPhoto() {
     return this.photo === undefined ? '/assets/images/profile.png' : 'data:image/jpeg;base64,' + this.photo;
   }
